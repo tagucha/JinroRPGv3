@@ -1,6 +1,10 @@
 # 人狼RPG v3
-基本的なルールは [WhiteTails](https://www.youtube.com/watch?v=ZRJOh_9EIFY&list=PL5aADROd9wP_ivTTE5bG3XlCrEyWJZz1o) さん及び、そのコラボしている方々の動画を見て学んでください。
+人狼RPGは [WhiteTails](https://www.youtube.com/watch?v=ZRJOh_9EIFY&list=PL5aADROd9wP_ivTTE5bG3XlCrEyWJZz1o) 様の企画であり、
+このプラグインはその企画を再現・一部改変したものになります。
+基本的なルールは [WhiteTails](https://www.youtube.com/watch?v=ZRJOh_9EIFY&list=PL5aADROd9wP_ivTTE5bG3XlCrEyWJZz1o) 様及び、そのコラボしている方々の動画を見て学んでください。
 以下では、このプラグイン固有の機能について記載します。
+また、特別許可をいただいて再現しているわけではないので、注意があれば突然非公開になりますし、
+万が一YouTubeなどの公的な場でこのプラグインを用いた企画を行う際には、 [WhiteTails](https://www.youtube.com/watch?v=ZRJOh_9EIFY&list=PL5aADROd9wP_ivTTE5bG3XlCrEyWJZz1o) 様に許可を得て行ってください。
 ---
 ## 役職
 
