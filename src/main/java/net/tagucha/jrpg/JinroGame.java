@@ -32,6 +32,7 @@ public class JinroGame {
     private final World world;
 
     public final GameTimer timer;
+    private boolean isStarted = false;
 
     private final HashSet<UUID> players = new HashSet<>();
     private final HashSet<UUID> spectators = new HashSet<>();
@@ -159,6 +160,7 @@ public class JinroGame {
                     UndarkCore.addPlayer(player.getUniqueId());
                 });
             }
+            this.isStarted = true;
             Bukkit.getPluginManager().callEvent(new GameStartEvent(this));
         } catch (GameException e) {
             this.plugin.noticeMessage(String.format("%s%s人数が足りないためゲームを開始できませんでした。", PluginMain.getLogo(ChatColor.GOLD), ChatColor.RED));
@@ -357,6 +359,10 @@ public class JinroGame {
     public boolean isAlive(GameJob job) {
         for (UUID uuid:this.getAlive()) if (this.getJob(uuid).isPresent()) if (this.getJob(uuid).get() == job) return true;
         return false;
+    }
+
+    public boolean isStarted() {
+        return isStarted;
     }
 
     public static class GameListener implements Listener {
@@ -613,7 +619,7 @@ public class JinroGame {
 
         @EventHandler
         public void onDisable(PluginDisableEvent event) {
-            this.plugin.getJinroGame().ifPresent(game -> game.finish(GameJob.VILLAGER, 1));
+            this.plugin.getJinroGame().ifPresent(game -> game.finish(null, 1));
         }
     }
 }

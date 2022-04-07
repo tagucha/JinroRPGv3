@@ -23,10 +23,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class GameCommand extends PluginCommand {
-    private Optional<GamePreparation> preparation = Optional.empty();
+    private GamePreparation preparation = null;
 
     public GameCommand(PluginMain plugin) {
         super(plugin, "jinro");
+    }
+
+    public Optional<GamePreparation> getPreparation() {
+        return Optional.ofNullable(this.preparation);
     }
 
     @Override
@@ -40,24 +44,32 @@ public class GameCommand extends PluginCommand {
                 case 1:
                     if (args[0].equalsIgnoreCase("start")) {
                         if (!isPlayer) {
-                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), "プレイヤーのみしか実行できません。"));
+                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
                             break;
                         }
                         this.checkPermission(sender,"jinro.command.start");
                         this.createGamePreparation(((Player) sender).getWorld(), 100).start();
                     } else if (args[0].equalsIgnoreCase("join")) {
                         if (!isPlayer) {
-                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), "プレイヤーのみしか実行できません。"));
+                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
                             break;
                         }
                         this.checkPermission(sender,null);
-                        this.preparation.ifPresent(prep -> prep.addPlayer((Player) sender));
+                        this.getPreparation().ifPresent(prep -> prep.addPlayer((Player) sender));
+                    } else if (args[0].equalsIgnoreCase("cancel")) {
+                        this.checkPermission(sender, "jinro.command.cancel");
+                        if (this.getPreparation().isEmpty()) sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " ゲームは開始されていません。"));
+                        else {
+                            this.plugin.noticeMessage(PluginMain.getLogo(ChatColor.GOLD) + " ゲームはキャンセルされました。");
+                            this.getPreparation().get().cancelGame();
+                            this.preparation = null;
+                        }
                     }
                     break;
                 case 2:
                     if (args[0].equalsIgnoreCase("start")) {
                         if (!isPlayer) {
-                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), "プレイヤーのみしか実行できません。"));
+                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
                             break;
                         }
                         this.checkPermission(sender,"jinro.command.start");
@@ -69,7 +81,7 @@ public class GameCommand extends PluginCommand {
                         }
                     } else if (args[0].equalsIgnoreCase("spawn")) {
                         if (!isPlayer) {
-                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), "プレイヤーのみしか実行できません。"));
+                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
                             break;
                         }
                         this.checkPermission(sender, "jinro.command.spawn");
@@ -78,28 +90,28 @@ public class GameCommand extends PluginCommand {
                         } else if (args[1].equalsIgnoreCase("support") || args[1].equalsIgnoreCase("補助")) {
                             this.plugin.MERCHANT.spawnSupportMerchant(((Player) sender).getLocation());
                         } else {
-                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), "第2引数は[combat|support]のみです。"));
+                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " 第2引数は[combat|support]のみです。"));
                             break;
                         }
                     } else if (args[0].equalsIgnoreCase("give")) {
                         if (!isPlayer) {
-                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), "プレイヤーのみしか実行できません。"));
+                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
                             break;
                         }
                         this.checkPermission(sender, "jinro.command.give");
                         Optional<GameItem> opt = this.plugin.ITEMS.items.stream().filter(item -> item.getConfigKey().key.equalsIgnoreCase(args[1])).findAny();
                         if (opt.isPresent()) ((Player) sender).getInventory().addItem(this.plugin.ITEMS.getItem(opt.get()));
-                        else sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), "そのようなアイテムは存在しません。"));
+                        else sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " そのようなアイテムは存在しません。"));
                     } else if (args[0].equalsIgnoreCase("sign")) {
                         if (!isPlayer) {
-                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), "プレイヤーのみしか実行できません。"));
+                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
                             break;
                         }
                         this.checkPermission(sender, "jinro.command.sign");
                         try {
                             Material material = Material.getMaterial(args[1]);
                             if (!JinroGame.GameListener.isSign(material)){
-                                sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), "素材は看板を指定してください。"));
+                                sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " 素材は看板を指定してください。"));
                                 return true;
                             }
                             ItemStack item = new ItemStack(material);
@@ -112,21 +124,21 @@ public class GameCommand extends PluginCommand {
                             item.setItemMeta(meta);
                             ((Player) sender).getInventory().addItem(item);
                         } catch (NullPointerException e) {
-                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), "素材は看板を指定してください。"));
+                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " 素材は看板を指定してください。"));
                         }
                     }
                     break;
                 case 3:
                     if (args[0].equalsIgnoreCase("sign")) {
                         if (!isPlayer) {
-                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), "プレイヤーのみしか実行できません。"));
+                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
                             break;
                         }
                         this.checkPermission(sender, "jinro.command.sign");
                         try {
                             Material material = Material.getMaterial(args[1]);
                             if (!JinroGame.GameListener.isSign(material)){
-                                sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), "素材は看板を指定してください。"));
+                                sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " 素材は看板を指定してください。"));
                                 return true;
                             }
                             ItemStack item = new ItemStack(material);
@@ -139,7 +151,7 @@ public class GameCommand extends PluginCommand {
                             item.setItemMeta(meta);
                             ((Player) sender).getInventory().addItem(item);
                         } catch (NullPointerException e) {
-                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), "素材は看板を指定してください。"));
+                            sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " 素材は看板を指定してください。"));
                         }
                     }
                     break;
@@ -157,6 +169,7 @@ public class GameCommand extends PluginCommand {
         switch (args.length) {
             case 1:
                 this.checkAndPut(sender,list,"start",args[0],"jinro.command.start");
+                this.checkAndPut(sender,list,"cancel",args[0],"jinro.command.cancel");
                 this.checkAndPut(sender,list,"spawn",args[0],"jinro.command.spawn");
                 this.checkAndPut(sender,list,"give",args[0],"jinro.command.give");
                 this.checkAndPut(sender,list,"sign",args[0],"jinro.command.sign");
@@ -192,6 +205,7 @@ public class GameCommand extends PluginCommand {
         sender.sendMessage(String.format("%s==============Command List==============", ChatColor.GOLD));
         sender.sendMessage(String.format("%s/jinro",ChatColor.WHITE));
         if (sender.hasPermission("jinro.command.start")) sender.sendMessage(String.format("%s- start [<integer>] : ゲームを開始します",ChatColor.WHITE));
+        if (sender.hasPermission("jinro.command.cancel")) sender.sendMessage(String.format("%s- cancel : ゲームを開始します",ChatColor.WHITE));
         sender.sendMessage(String.format("%s- join : 開催されてるゲームに参加します",ChatColor.WHITE));
         if (sender.hasPermission("jinro.command.spawn")) sender.sendMessage(String.format("%s- spawn <combat|support> : 村人を召喚します",ChatColor.WHITE));
         if (sender.hasPermission("jinro.command.give")) sender.sendMessage(String.format("%s- give <itemID>", ChatColor.WHITE));
@@ -200,13 +214,13 @@ public class GameCommand extends PluginCommand {
     }
 
     public GamePreparation createGamePreparation(World world, int time) throws GameException {
-        if (this.preparation.isPresent()) throw new SimpleMessageException(ChatColor.RED,ChatColor.RED,"ゲームは既に開始されています。");
-        this.preparation = Optional.of(new GamePreparation(this.plugin, world, time));
-        return this.preparation.get();
+        if (this.getPreparation().isPresent()) throw new SimpleMessageException(ChatColor.RED,ChatColor.RED,"ゲームは既に開始されています。");
+        this.preparation = new GamePreparation(this.plugin, world, time);
+        return this.getPreparation().get();
     }
 
     @EventHandler
     public void onFinishGame(GameEndEvent event) {
-        this.preparation = Optional.empty();
+        this.preparation = null;
     }
 }

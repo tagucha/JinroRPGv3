@@ -178,4 +178,12 @@ public class GamePreparation implements Listener {
         this.wish.put(player.getUniqueId(), job);
         player.sendMessage(PluginMain.getLogo(ChatColor.AQUA) + " " + job.getRealName() + ChatColor.WHITE + "を希望しました");
     }
+
+    public void cancelGame() {
+        Optional.ofNullable(this.nextThread).ifPresent(BukkitRunnable::cancel);
+        if (this.game.isStarted()) this.game.finish(null, 1);
+        else {
+            this.bar.removeAll();
+        }
+    }
 }

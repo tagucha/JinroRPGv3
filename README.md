@@ -4,8 +4,11 @@
 基本的なルールは [WhiteTails](https://www.youtube.com/watch?v=ZRJOh_9EIFY&list=PL5aADROd9wP_ivTTE5bG3XlCrEyWJZz1o) 様及び、そのコラボしている方々の動画を見て学んでください。
 以下では、このプラグイン固有の機能について記載します。
 また、特別許可をいただいて再現しているわけではないので、注意があれば突然非公開になりますし、
-万が一YouTubeなどの公的な場でこのプラグインを用いた企画を行う際には、 [WhiteTails](https://www.youtube.com/watch?v=ZRJOh_9EIFY&list=PL5aADROd9wP_ivTTE5bG3XlCrEyWJZz1o) 様に許可を得て行ってください。
+万が一YouTubeなどの公的な場でこのプラグインを用いた企画を行う際には、WhiteTails公式の [ガイドライン](https://whitetails.jp/guideline/) に従い利用してください。
 ---
+## バージョン
+バージョンはSpigot-1.18.1です
+
 ## 役職
 
 |   役職   | 説明                                  |
@@ -21,13 +24,14 @@
 
 ## コマンド
 
-|             コマンド              |         権限          | 説明                            |
-|:-----------------------------:|:-------------------:|:------------------------------|
-|         /jinro start          | jinro.command.start | ゲームの募集を開始します                  |
-|          /jinro join          |         なし          | 募集されてるゲームに参加します               |
-| /jinro spawn <combat/support> | jinro.command.spawn | 村人を自分の位置に召喚します                |
-|     /jinro give <アイテムID>      | jinro.command.give  | ゲームのアイテムを入手します                |
-|     /jinro sign <素材> [名前]     | jinro.command.sign  | 占いや騎士の加護に使うための看板をアイテムとして入手します |
+|             コマンド              |          権限          | 説明                            |
+|:-----------------------------:|:--------------------:|:------------------------------|
+|         /jinro start          | jinro.command.start  | ゲームの募集を開始します                  |
+|         /jinro cancel         | jinro.command.cancel | ゲームを強制終了します                   |
+|          /jinro join          |          なし          | 募集されてるゲームに参加します               |
+| /jinro spawn <combat/support> | jinro.command.spawn  | 村人を自分の位置に召喚します                |
+|     /jinro give <アイテムID>      |  jinro.command.give  | ゲームのアイテムを入手します                |
+|     /jinro sign <素材> [名前]     |  jinro.command.sign  | 占いや騎士の加護に使うための看板をアイテムとして入手します |
 
 ## ゲーム設定
 ゲーム設定はconfig.ymlで行えます
