@@ -47,14 +47,17 @@ public class GameMerchant {
     }
 
     public static boolean isMerchant(Entity entity) {
+        if (entity.getCustomName() == null) return false;
         return entity.getType() == EntityType.VILLAGER && (entity.getCustomName().equalsIgnoreCase(ChatColor.GREEN + "補助") || entity.getCustomName().equalsIgnoreCase(ChatColor.GREEN + "戦闘"));
     }
 
     public static boolean isSupportMerchant(Entity entity) {
+        if (entity.getCustomName() == null) return false;
         return entity.getType() == EntityType.VILLAGER && entity.getCustomName().equalsIgnoreCase(ChatColor.GREEN + "補助");
     }
 
     public static boolean isCombatMerchant(Entity entity) {
+        if (entity.getCustomName() == null) return false;
         return entity.getType() == EntityType.VILLAGER && entity.getCustomName().equalsIgnoreCase(ChatColor.GREEN + "戦闘");
     }
 

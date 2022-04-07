@@ -22,6 +22,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -138,6 +139,11 @@ public class JinroGame {
             this.giveJobs(wish);
             this.timer.start();
             for (UUID uuid:this.players) {
+                this.sendMessage(uuid, String.format("%s役職配分:", PluginMain.getLogo(ChatColor.GOLD)));
+                this.sendMessage(uuid, Arrays.stream(GameJob.values())
+                        .filter(job -> this.workers.get(job).size() > 0)
+                        .map(job -> String.format("%s%s: %d人", job.getDisplayName(), ChatColor.WHITE, this.workers.get(job).size()))
+                        .collect(Collectors.joining(", ")));
                 this.sendMessage(uuid, String.format("%s %sあなたの役職は%s%sです",
                                 PluginMain.getLogo(ChatColor.GOLD),
                                 ChatColor.WHITE,
@@ -157,7 +163,13 @@ public class JinroGame {
                     player.setSaturation(40);
                     player.setGameMode(GameMode.ADVENTURE);
                     player.setFlying(false);
-                    UndarkCore.addPlayer(player.getUniqueId());
+                    Arrays.stream(PotionEffectType.values()).filter(player::hasPotionEffect).forEach(player::removePotionEffect);
+                });
+            }
+            this.players.forEach(UndarkCore::addPlayer);
+            for (UUID uuid:this.spectators) {
+                this.plugin.getPlayer(uuid).ifPresent(player -> {
+                    player.setGameMode(GameMode.SPECTATOR);
                 });
             }
             this.isStarted = true;
@@ -173,6 +185,14 @@ public class JinroGame {
         this.timer.stop();
         this.skeletons.forEach(skeleton -> {
             if (skeleton != null) skeleton.remove();
+        });
+        this.players.stream().map(plugin::getPlayer).filter(Optional::isPresent).map(Optional::get).forEach(player -> {
+            player.setGameMode(GameMode.ADVENTURE);
+            player.setAllowFlight(true);
+        });
+        this.spectators.stream().map(plugin::getPlayer).filter(Optional::isPresent).map(Optional::get).forEach(player -> {
+            player.setGameMode(GameMode.ADVENTURE);
+            player.setAllowFlight(true);
         });
         switch (code) {
             case 0:

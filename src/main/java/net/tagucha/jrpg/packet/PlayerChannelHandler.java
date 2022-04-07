@@ -10,7 +10,6 @@ import net.tagucha.jrpg.PluginMain;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public final class PlayerChannelHandler extends ChannelDuplexHandler {
     private final PluginMain plugin;
@@ -27,7 +26,6 @@ public final class PlayerChannelHandler extends ChannelDuplexHandler {
 
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
         if (msg instanceof PacketPlayOutPlayerInfo packet) {
-//            this.player.sendMessage(packet.c() + " " + packet.b().stream().map(data -> data.a().getName()).collect(Collectors.joining(",")));
             Optional<JinroGame> opt = this.plugin.isPlayer(this.player.getUniqueId());
             if (opt.isPresent()) {
                 switch (packet.c()) {
@@ -39,7 +37,10 @@ public final class PlayerChannelHandler extends ChannelDuplexHandler {
                         packet.b().add(new PacketPlayOutPlayerInfo.PlayerInfoData(data.a(), data.b(), EnumGamemode.c, data.d()));
                         break;
                     case b:
-                        if (UndarkCore.getCanceler().contains(this.player.getUniqueId())) return;
+                        if (UndarkCore.getCanceler().contains(this.player.getUniqueId())) {
+                            packet.b().removeIf(d -> d.c() == EnumGamemode.d);
+                            if (packet.b().isEmpty()) return;
+                        }
                         break;
                 }
             }

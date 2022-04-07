@@ -7,7 +7,9 @@ import net.tagucha.jrpg.exception.GameAreaInputException;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.util.BoundingBox;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -119,58 +121,21 @@ public class GameAreaConfig {
         }
     }
 
-    private boolean isEmpty(Material material) {
-        switch (material) {
-            case AIR:
-            case CAVE_AIR:
-            case VOID_AIR:
-            case WATER:
-            case GRASS:
-            case TALL_GRASS:
-            case SEAGRASS:
-            case TALL_SEAGRASS:
-            case TORCH:
-            case WHITE_CARPET:
-            case CYAN_CARPET:
-            case BLACK_CARPET:
-            case BLUE_CARPET:
-            case BROWN_CARPET:
-            case GRAY_CARPET:
-            case GREEN_CARPET:
-            case LIGHT_BLUE_CARPET:
-            case LIGHT_GRAY_CARPET:
-            case LIME_CARPET:
-            case MAGENTA_CARPET:
-            case ORANGE_CARPET:
-            case PINK_CARPET:
-            case PURPLE_CARPET:
-            case RED_CARPET:
-            case YELLOW_CARPET:
-            case OAK_SIGN:
-            case SPRUCE_SIGN:
-            case ACACIA_SIGN:
-            case SPRUCE_WALL_SIGN:
-            case ACACIA_WALL_SIGN:
-            case BIRCH_SIGN:
-            case BIRCH_WALL_SIGN:
-            case DARK_OAK_SIGN:
-            case DARK_OAK_WALL_SIGN:
-            case JUNGLE_SIGN:
-            case JUNGLE_WALL_SIGN:
-            case OAK_WALL_SIGN:
-            case LADDER:
-            case RAIL:
-            case ACTIVATOR_RAIL:
-            case DETECTOR_RAIL:
-            case POWERED_RAIL:
-                return true;
-            default:
-                return false;
-        }
+    private boolean isTopEmpty(Block block) {
+        List<BoundingBox> boxes = new ArrayList<>(block.getCollisionShape().getBoundingBoxes());
+        if (boxes.isEmpty()) return true;
+        double maxY = boxes.stream().map(BoundingBox::getMaxY).max(Double::compareTo).get();
+        return maxY <= 0.2;
     }
 
-    private boolean isLand(Material material) {
-        return !isEmpty(material) && material != Material.BARRIER && material != Material.LAVA;
+    private boolean isEmpty(Block block) {
+        List<BoundingBox> boxes = new ArrayList<>(block.getCollisionShape().getBoundingBoxes());
+        return boxes.isEmpty();
+    }
+
+    private boolean isLand(Block block) {
+        Material material = block.getType();
+        return !isEmpty(block) && material != Material.BARRIER && material != Material.LAVA;
     }
 
     private interface ShapedGameArea {
@@ -220,7 +185,7 @@ public class GameAreaConfig {
                 Location base = new Location(world,x,y,z);
                 Location land = new Location(world,x,y-1,z);
                 Location head = new Location(world,x,y+1,z);
-                if (isLand(land.getBlock().getType()) && isEmpty(base.getBlock().getType()) && isEmpty(head.getBlock().getType())) {
+                if (isLand(land.getBlock()) && isTopEmpty(base.getBlock()) && isEmpty(head.getBlock())) {
                     locs.add(base);
                 }
             }
@@ -267,7 +232,7 @@ public class GameAreaConfig {
                 Location base = new Location(world,x + centerX,y + centerY,z + centerZ);
                 Location land = new Location(world,x + centerX,y-1 + centerY,z + centerZ);
                 Location head = new Location(world,x + centerX,y+1 + centerY,z + centerZ);
-                if (isLand(land.getBlock().getType()) && isEmpty(base.getBlock().getType()) && isEmpty(head.getBlock().getType())) {
+                if (isLand(land.getBlock()) && isTopEmpty(base.getBlock()) && isEmpty(head.getBlock())) {
                     locs.add(base);
                 }
             }

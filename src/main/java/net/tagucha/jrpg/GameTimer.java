@@ -17,7 +17,7 @@ public class GameTimer {
     private final JinroGame game;
     private final BossBar time_bar;
     private long total_time = 0;
-    private int time = 60;
+    private int time;
     private int day = 1;
     private boolean isStarted = false;
     private boolean isStopped = false;
@@ -35,6 +35,7 @@ public class GameTimer {
         this.game = game;
         this.max_time_night = plugin.getGameConfig().getTimeNight();
         this.max_time_day = plugin.getGameConfig().getTimeDay();
+        this.time = plugin.getGameConfig().getTimeFirstDay();
         this.time_bar = Bukkit.createBossBar(DAY_TIME,DAY_COLOR, BarStyle.SEGMENTED_6);
     }
 

@@ -1,18 +1,16 @@
 package net.tagucha.jrpg;
 
-import io.netty.channel.Channel;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.tagucha.jrpg.command.GameCommand;
 import net.tagucha.jrpg.config.CustomConfig;
 import net.tagucha.jrpg.config.GameConfig;
 import net.tagucha.jrpg.event.OriginalEventManager;
 import net.tagucha.jrpg.item.GameItems;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.tagucha.jrpg.packet.UndarkCore;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
