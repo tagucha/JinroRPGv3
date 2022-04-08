@@ -1,7 +1,7 @@
 package net.tagucha.jrpg.item.items;
 
-import net.tagucha.jrpg.GameTimer;
-import net.tagucha.jrpg.JinroGame;
+import net.tagucha.jrpg.core.GameTimer;
+import net.tagucha.jrpg.core.JinroGame;
 import net.tagucha.jrpg.PluginMain;
 import net.tagucha.jrpg.event.PlayerAttackEvent;
 import net.tagucha.jrpg.item.GameItem;

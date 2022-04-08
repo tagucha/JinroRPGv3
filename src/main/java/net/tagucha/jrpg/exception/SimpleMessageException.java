@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.exception;
 
-import net.tagucha.jrpg.JinroGame;
+import net.tagucha.jrpg.core.JinroGame;
 import net.tagucha.jrpg.PluginMain;
 import org.bukkit.ChatColor;
 

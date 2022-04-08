@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.event;
 
-import net.tagucha.jrpg.JinroGame;
+import net.tagucha.jrpg.core.JinroGame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;

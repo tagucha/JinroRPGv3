@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.event;
 
-import net.tagucha.jrpg.JinroGame;
+import net.tagucha.jrpg.core.JinroGame;
 import org.bukkit.event.Event;
 
 public abstract class GameEvent extends Event {

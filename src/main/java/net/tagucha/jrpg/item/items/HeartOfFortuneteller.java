@@ -11,7 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import net.tagucha.jrpg.JinroGame;
+import net.tagucha.jrpg.core.JinroGame;
 import net.tagucha.jrpg.PluginMain;
 
 import java.util.*;
@@ -36,16 +36,6 @@ public class HeartOfFortuneteller extends GameItem {
                 new ConfigKey("heart_of_fortuneteller", ItemType.SUPPORT)
         );
         this.setLighting(true);
-    }
-
-    @Override
-    public Consumer<ItemStack> toUpdateItem(Object... objects) {
-        return stack -> {
-            ItemMeta meta = stack.getItemMeta();
-            meta.addEnchant(Enchantment.ARROW_DAMAGE,1,true);
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            stack.setItemMeta(meta);
-        };
     }
 
     @EventHandler

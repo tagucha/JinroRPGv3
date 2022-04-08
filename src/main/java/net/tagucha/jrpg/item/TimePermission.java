@@ -1,7 +1,7 @@
 package net.tagucha.jrpg.item;
 
 import org.bukkit.ChatColor;
-import net.tagucha.jrpg.GameTimer;
+import net.tagucha.jrpg.core.GameTimer;
 import net.tagucha.jrpg.PluginMain;
 
 public enum TimePermission {

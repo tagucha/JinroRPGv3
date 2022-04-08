@@ -8,7 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import net.tagucha.jrpg.JinroGame;
+import net.tagucha.jrpg.core.JinroGame;
 import net.tagucha.jrpg.PluginMain;
 
 import java.util.Arrays;

@@ -1,7 +1,7 @@
 package net.tagucha.jrpg.command;
 
-import net.tagucha.jrpg.GamePreparation;
-import net.tagucha.jrpg.JinroGame;
+import net.tagucha.jrpg.core.GameManager;
+import net.tagucha.jrpg.core.GamePreparation;
 import net.tagucha.jrpg.PluginMain;
 import net.tagucha.jrpg.event.GameEndEvent;
 import net.tagucha.jrpg.exception.GameException;
@@ -110,7 +110,7 @@ public class GameCommand extends PluginCommand {
                         this.checkPermission(sender, "jinro.command.sign");
                         try {
                             Material material = Material.getMaterial(args[1]);
-                            if (!JinroGame.GameListener.isSign(material)){
+                            if (!GameManager.isSign(material)){
                                 sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " 素材は看板を指定してください。"));
                                 return true;
                             }
@@ -118,8 +118,8 @@ public class GameCommand extends PluginCommand {
                             BlockStateMeta meta = (BlockStateMeta) item.getItemMeta();
                             meta.setDisplayName(ChatColor.GOLD + "未登録の看板");
                             Sign sign = (Sign) meta.getBlockState();
-                            sign.setLine(1, JinroGame.GameListener.REGISTER_YET);
-                            sign.setLine(3, JinroGame.GameListener.TO_REGISTER);
+                            sign.setLine(1, GameManager.REGISTER_YET);
+                            sign.setLine(3, GameManager.TO_REGISTER);
                             meta.setBlockState(sign);
                             item.setItemMeta(meta);
                             ((Player) sender).getInventory().addItem(item);
@@ -137,7 +137,7 @@ public class GameCommand extends PluginCommand {
                         this.checkPermission(sender, "jinro.command.sign");
                         try {
                             Material material = Material.getMaterial(args[1]);
-                            if (!JinroGame.GameListener.isSign(material)){
+                            if (!GameManager.isSign(material)){
                                 sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " 素材は看板を指定してください。"));
                                 return true;
                             }
@@ -145,8 +145,8 @@ public class GameCommand extends PluginCommand {
                             BlockStateMeta meta = (BlockStateMeta) item.getItemMeta();
                             meta.setDisplayName(ChatColor.GOLD + "登録済みの看板(" + args[2] + ")");
                             Sign sign = (Sign) meta.getBlockState();
-                            sign.setLine(1, JinroGame.GameListener.REGISTERED.replace("<NAME>",args[2]));
-                            sign.setLine(3, JinroGame.GameListener.TO_FORTUNE);
+                            sign.setLine(1, GameManager.REGISTERED.replace("<NAME>",args[2]));
+                            sign.setLine(3, GameManager.TO_FORTUNE);
                             meta.setBlockState(sign);
                             item.setItemMeta(meta);
                             ((Player) sender).getInventory().addItem(item);

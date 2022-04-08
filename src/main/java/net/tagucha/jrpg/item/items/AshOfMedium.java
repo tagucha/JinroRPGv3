@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.item.items;
 
-import net.tagucha.jrpg.JinroGame;
+import net.tagucha.jrpg.core.JinroGame;
 import net.tagucha.jrpg.PluginMain;
 import net.tagucha.jrpg.item.GameItem;
 import net.tagucha.jrpg.item.ItemPermission;
@@ -33,16 +33,6 @@ public class AshOfMedium extends GameItem {
                 new ConfigKey("ash_of_medium", ItemType.SUPPORT)
         );
         this.setLighting(true);
-    }
-
-    @Override
-    public Consumer<ItemStack> toUpdateItem(Object... objects) {
-        return stack -> {
-            ItemMeta meta = stack.getItemMeta();
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            meta.addEnchant(Enchantment.ARROW_DAMAGE, 1, true);
-            stack.setItemMeta(meta);
-        };
     }
 
     @Override

@@ -7,8 +7,12 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.tagucha.jrpg.command.GameCommand;
 import net.tagucha.jrpg.config.CustomConfig;
 import net.tagucha.jrpg.config.GameConfig;
+import net.tagucha.jrpg.core.GameManager;
+import net.tagucha.jrpg.core.GameMerchant;
+import net.tagucha.jrpg.core.JinroGame;
 import net.tagucha.jrpg.event.OriginalEventManager;
 import net.tagucha.jrpg.item.GameItems;
+import net.tagucha.jrpg.job.JobManager;
 import net.tagucha.jrpg.packet.UndarkCore;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -24,6 +28,7 @@ public final class PluginMain extends JavaPlugin implements Listener {
     private JinroGame GAME = null;
     public GameItems ITEMS;
     public GameMerchant MERCHANT;
+    public JobManager JOB_MANAGER;
     private final Map<UUID,Player> uuidToPlayer = new HashMap<>();
     private final HashSet<Player> onlinePlayers = new HashSet<>();
     private final HashSet<UUID> onlinePLayersUUID = new HashSet<>();
@@ -38,10 +43,12 @@ public final class PluginMain extends JavaPlugin implements Listener {
     public void onEnable() {
         this.ITEMS = new GameItems(this);
         this.MERCHANT = new GameMerchant(this);
+        this.JOB_MANAGER = new JobManager(this);
         this.getServer().getPluginManager().registerEvents(this,this);
-        this.getServer().getPluginManager().registerEvents(new JinroGame.GameListener(this),this);
+        this.getServer().getPluginManager().registerEvents(new GameManager(this),this);
+        this.getServer().getPluginManager().registerEvents(this.JOB_MANAGER,this);
+        this.getServer().getPluginManager().registerEvents(new OriginalEventManager(this),this);
         this.getServer().getOnlinePlayers().forEach(this::registerPlayer);
-        new OriginalEventManager(this).init();
         this.config.reload();
         new GameCommand(this).register();
         new CustomConfig(this, "world_setting_sample").saveDefaultConfig();

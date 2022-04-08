@@ -1,7 +1,7 @@
 package net.tagucha.jrpg.config;
 
 import net.minecraft.util.Tuple;
-import net.tagucha.jrpg.JinroGame;
+import net.tagucha.jrpg.core.JinroGame;
 import net.tagucha.jrpg.PluginMain;
 import net.tagucha.jrpg.exception.GameAreaInputException;
 import org.bukkit.Location;

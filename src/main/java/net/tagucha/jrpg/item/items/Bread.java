@@ -8,6 +8,7 @@ import net.tagucha.jrpg.item.TimePermission;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -45,9 +46,9 @@ public class Bread extends GameItem {
             if (!(objects[0] instanceof Integer)) stack.setType(Material.AIR);
             else {
                 Random random = new Random();
-                stack.getItemMeta().setDisplayName(String.format(this.name,objects[0],names[random.nextInt(names.length)]));
-                if (this.plugin.getGameConfig().isReloaded()) if (this.plugin.getGameConfig().getCustomModelData().containsKey(this.getConfigKey().key))
-                    ItemUtil.setCMD(stack, this.plugin.getGameConfig().getCustomModelData().get(this.getConfigKey().key));
+                ItemMeta meta = stack.getItemMeta();
+                meta.setDisplayName(String.format(this.name,objects[0],names[random.nextInt(names.length)]));
+                stack.setItemMeta(meta);
             }
         };
     }

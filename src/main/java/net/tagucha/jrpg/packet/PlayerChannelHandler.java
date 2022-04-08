@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
 import net.minecraft.world.level.EnumGamemode;
-import net.tagucha.jrpg.JinroGame;
+import net.tagucha.jrpg.core.JinroGame;
 import net.tagucha.jrpg.PluginMain;
 import org.bukkit.entity.Player;
 
@@ -32,13 +32,11 @@ public final class PlayerChannelHandler extends ChannelDuplexHandler {
                     case a:
                         if (!opt.get().isAlive(this.player.getUniqueId())) break;
                         if (!opt.get().getPlayers().contains(packet.b().get(0).a().getId())) break;
-                        PacketPlayOutPlayerInfo.PlayerInfoData data = packet.b().get(0);
-                        packet.b().clear();
-                        packet.b().add(new PacketPlayOutPlayerInfo.PlayerInfoData(data.a(), data.b(), EnumGamemode.c, data.d()));
+                        packet.b().set(0, new PacketPlayOutPlayerInfo.PlayerInfoData(packet.b().get(0).a(), packet.b().get(0).b(), EnumGamemode.c, packet.b().get(0).d()));
                         break;
                     case b:
                         if (UndarkCore.getCanceler().contains(this.player.getUniqueId())) {
-                            packet.b().removeIf(d -> d.c() == EnumGamemode.d);
+                            for (int i = packet.b().size() - 1;i >= 0;i--) if (packet.b().get(i).c() == EnumGamemode.d) packet.b().remove(i);
                             if (packet.b().isEmpty()) return;
                         }
                         break;

@@ -1,5 +1,6 @@
-package net.tagucha.jrpg;
+package net.tagucha.jrpg.core;
 
+import net.tagucha.jrpg.PluginMain;
 import net.tagucha.jrpg.item.GameItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -11,13 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 
-public class GameMerchant {
-    private final PluginMain plugin;
-
-    public GameMerchant(PluginMain plugin) {
-        this.plugin = plugin;
-    }
-
+public record GameMerchant(PluginMain plugin) {
     public Villager spawnCombatMerchant(Location location) {
         Villager villager = spawnSimpleMerchant(location);
         villager.setCustomName(ChatColor.GREEN + "戦闘");
@@ -36,8 +31,8 @@ public class GameMerchant {
 
     private Villager spawnSimpleMerchant(Location location) {
         World world = location.getWorld();
-        Location loc = new Location(world, (double)location.getBlockX() + 0.5D, location.getBlockY(), (double)location.getBlockZ() + 0.5D, rotation(location.getYaw(), 45.0D), 0.0F);
-        Villager villager = (Villager)world.spawnEntity(loc, EntityType.VILLAGER);
+        Location loc = new Location(world, (double) location.getBlockX() + 0.5D, location.getBlockY(), (double) location.getBlockZ() + 0.5D, rotation(location.getYaw(), 45.0D), 0.0F);
+        Villager villager = (Villager) world.spawnEntity(loc, EntityType.VILLAGER);
         villager.setGravity(false);
         villager.setInvulnerable(true);
         villager.setAI(false);
@@ -83,14 +78,14 @@ public class GameMerchant {
     }
 
     public static float rotation(double r, double p) {
-        while(r < 0.0D) {
+        while (r < 0.0D) {
             r += 360.0D;
         }
 
-        while(r > 360.0D) {
+        while (r > 360.0D) {
             r -= 360.0D;
         }
 
-        return ((float)((int)(r / p)) + (float)(r % 45.0D > p / 2.0D ? 1 : 0)) * 45.0F;
+        return ((float) ((int) (r / p)) + (float) (r % 45.0D > p / 2.0D ? 1 : 0)) * 45.0F;
     }
 }

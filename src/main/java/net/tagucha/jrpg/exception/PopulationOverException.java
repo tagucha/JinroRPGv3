@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.exception;
 
-import net.tagucha.jrpg.JinroGame;
+import net.tagucha.jrpg.core.JinroGame;
 import org.bukkit.ChatColor;
 
 public class PopulationOverException extends SimpleMessageException {

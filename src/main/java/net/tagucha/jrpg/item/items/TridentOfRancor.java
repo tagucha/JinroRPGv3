@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.item.items;
 
-import net.tagucha.jrpg.JinroGame;
+import net.tagucha.jrpg.core.JinroGame;
 import net.tagucha.jrpg.PluginMain;
 import net.tagucha.jrpg.event.PlayerAttackEvent;
 import net.tagucha.jrpg.item.GameItem;
@@ -9,6 +9,7 @@ import net.tagucha.jrpg.item.TimePermission;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Trident;
@@ -96,6 +97,7 @@ public class TridentOfRancor extends GameItem {
             trident.remove();
             trident.getWorld().spawn(trident.getLocation(), Trident.class, trd -> {
                 trd.setVelocity(trident.getVelocity());
+                trd.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
                 flying_tridents.add(trd.getUniqueId());
             });
         });

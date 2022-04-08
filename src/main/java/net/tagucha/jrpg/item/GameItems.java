@@ -14,6 +14,7 @@ public class GameItems {
     public final Map<GameItem.ItemType, Map<String, MerchantRecipe>> merchant_recipes = new HashMap<>();
 
     public final ItemStack BLUNT;
+    public final ItemStack TELESCOPE;
 
     public final ItemStack NORMAL_BOW;
     public final ItemStack NORMAL_ARROW;
@@ -42,6 +43,7 @@ public class GameItems {
         for (GameItem.ItemType type : GameItem.ItemType.values()) this.merchant_recipes.put(type, new HashMap<>());
 
         this.BLUNT = this.register(new Blunt(this.plugin), 0);
+        this.TELESCOPE = this.register(new Telescope(this.plugin), 0);
 
         this.NORMAL_BOW = this.register(new NormalBow(this.plugin),2);
         this.NORMAL_ARROW = this.register(new NormalArrow(this.plugin),2);

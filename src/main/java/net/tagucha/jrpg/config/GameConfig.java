@@ -1,6 +1,7 @@
 package net.tagucha.jrpg.config;
 
 import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.job.GameJob;
 import net.tagucha.jrpg.util.ItemUtil;
 import net.tagucha.jrpg.item.GameItem;
 import org.bukkit.Material;
@@ -109,11 +110,11 @@ public class GameConfig {
                     boolean suc = true;
                     for (String s : this.config.getString(String.format("numbers.jobs.%d", p)).split(",")) {
                         if (s.length() < 3) {
-                            this.log(String.format("L<3: numbers.jobs.%dの%sは\"[w,m,v,b,h]=数\"である必要はあります(デフォルトの値を使用します)", p, s));
+                            this.log(String.format("L<3: numbers.jobs.%dの%sは\"[JobID(アルファベット小文字1文字)]=数\"である必要はあります(デフォルトの値を使用します)", p, s));
                             suc = false;
                         } else {
                             if (s.charAt(1) != '=') {
-                                this.log(String.format("Not2=,numbers.jobs.%dの%sは\"[w,m,v,b,h]=数\"である必要はあります(デフォルトの値を使用します)", p, s));
+                                this.log(String.format("Not2=,numbers.jobs.%dの%sは\"[JobID(アルファベット小文字1文字)]=数\"である必要はあります(デフォルトの値を使用します)", p, s));
                                 suc = false;
                             } else {
                                 char c = s.charAt(0);
@@ -122,7 +123,7 @@ public class GameConfig {
                                     sum += pop;
                                     prop.put(c, pop);
                                 } catch (Exception e) {
-                                    this.log(String.format("%s: numbers.jobs.%dの%sは\"[w,m,v,b,h]=数\"である必要はあります(デフォルトの値を使用します)", e.getClass().getSimpleName(), p, s));
+                                    this.log(String.format("%s: numbers.jobs.%dの%sは\"[JobID(アルファベット小文字1文字)]=数\"である必要はあります(デフォルトの値を使用します)", e.getClass().getSimpleName(), p, s));
                                     suc = false;
                                 }
                             }
@@ -132,14 +133,11 @@ public class GameConfig {
                         if (sum > this.max_player) {
                             this.log(String.format("numbers.jobs.%dの合計はnumbers.max_player以下である必要があります(デフォルトの値を使用します)", p));
                         } else {
-                            int w = (int) prop.getOrDefault('w',0);
-                            int m = (int) prop.getOrDefault('m',0);
-                            int l = (int) prop.getOrDefault('l',0);
-                            int v = (int) prop.getOrDefault('v',0);
-                            int b = (int) prop.getOrDefault('b',0);
-                            int h = (int) prop.getOrDefault('h',0);
-                            int f = (int) prop.getOrDefault('f',0);
-                            this.jobs.put(p,new int[]{w,m,l,v,b,h,f});
+                            int[] job_pop = new int[GameJob.values().length - 1];
+                            for (GameJob job:GameJob.values()) {
+                                if (job.count >= 0) job_pop[job.count] = (int) prop.getOrDefault(job.id, 0);
+                            }
+                            this.jobs.put(p,job_pop);
                         }
                     }
                 }

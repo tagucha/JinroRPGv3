@@ -1,7 +1,7 @@
 package net.tagucha.jrpg.item;
 
 import org.bukkit.ChatColor;
-import net.tagucha.jrpg.GameJob;
+import net.tagucha.jrpg.job.GameJob;
 import net.tagucha.jrpg.PluginMain;
 
 public enum ItemPermission {

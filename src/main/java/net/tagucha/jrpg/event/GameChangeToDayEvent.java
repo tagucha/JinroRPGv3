@@ -1,13 +1,13 @@
 package net.tagucha.jrpg.event;
 
-import net.tagucha.jrpg.JinroGame;
+import net.tagucha.jrpg.core.JinroGame;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class ChangeToDayEvent extends GameEvent {
+public class GameChangeToDayEvent extends GameEvent {
     private static final HandlerList handlers = new HandlerList();
 
-    public ChangeToDayEvent(JinroGame game) {
+    public GameChangeToDayEvent(JinroGame game) {
         super(game);
     }
 

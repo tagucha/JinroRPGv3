@@ -1,5 +1,6 @@
-package net.tagucha.jrpg;
+package net.tagucha.jrpg.core;
 
+import net.tagucha.jrpg.PluginMain;
 import net.tagucha.jrpg.event.GameTickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -7,8 +8,8 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.scheduler.BukkitRunnable;
-import net.tagucha.jrpg.event.ChangeToDayEvent;
-import net.tagucha.jrpg.event.ChangeToNightEvent;
+import net.tagucha.jrpg.event.GameChangeToDayEvent;
+import net.tagucha.jrpg.event.GameChangeToNightEvent;
 
 public class GameTimer {
     public final int max_time_night;
@@ -18,6 +19,7 @@ public class GameTimer {
     private final BossBar time_bar;
     private long total_time = 0;
     private int time;
+    private int max_time;
     private int day = 1;
     private boolean isStarted = false;
     private boolean isStopped = false;
@@ -36,6 +38,7 @@ public class GameTimer {
         this.max_time_night = plugin.getGameConfig().getTimeNight();
         this.max_time_day = plugin.getGameConfig().getTimeDay();
         this.time = plugin.getGameConfig().getTimeFirstDay();
+        this.max_time = Math.max(this.max_time_day, this.time);
         this.time_bar = Bukkit.createBossBar(DAY_TIME,DAY_COLOR, BarStyle.SEGMENTED_6);
     }
 
@@ -97,23 +100,25 @@ public class GameTimer {
             this.time_bar.setTitle(NIGHT_TIME);
             this.time_bar.setColor(NIGHT_COLOR);
             this.time = this.max_time_night;
+            this.max_time = this.max_time_night;
             this.game.getWorld().setTime(18000);
-            Bukkit.getPluginManager().callEvent(new ChangeToNightEvent(this.game));
+            Bukkit.getPluginManager().callEvent(new GameChangeToNightEvent(this.game));
         }
         else {
             this.clock = Clock.DAY;
             this.time_bar.setTitle(DAY_TIME);
             this.time_bar.setColor(DAY_COLOR);
             this.time = this.max_time_day;
+            this.max_time = this.max_time_day;
             this.game.getWorld().setTime(6000);
             this.day++;
-            Bukkit.getPluginManager().callEvent(new ChangeToDayEvent(this.game));
+            Bukkit.getPluginManager().callEvent(new GameChangeToDayEvent(this.game));
         }
     }
 
     private void updateTimeBar() {
         this.game.getWorld().getPlayers().forEach(this.time_bar::addPlayer);
-        this.time_bar.setProgress(((double) time) / ((double) (this.clock == Clock.DAY ? max_time_day : max_time_night)));
+        this.time_bar.setProgress(((double) time) / ((double) this.max_time));
     }
 
     private class TimerThread extends BukkitRunnable {

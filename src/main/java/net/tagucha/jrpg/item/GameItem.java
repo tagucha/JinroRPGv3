@@ -1,5 +1,6 @@
 package net.tagucha.jrpg.item;
 
+import net.tagucha.jrpg.core.GameManager;
 import net.tagucha.jrpg.event.PlayerAttackEvent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -16,15 +17,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import net.tagucha.jrpg.JinroGame;
+import net.tagucha.jrpg.core.JinroGame;
 import net.tagucha.jrpg.PluginMain;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
-
-import static net.tagucha.jrpg.JinroGame.GameListener.*;
 
 public class GameItem implements Listener {
     protected final PluginMain plugin;
@@ -170,13 +169,13 @@ public class GameItem implements Listener {
         if (this.plugin.ITEMS.getItem(this).isSimilar(player.getInventory().getItemInMainHand())) {
             if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
             Block block = event.getClickedBlock();
-            if (isSign(block.getType())) {
+            if (GameManager.isSign(block.getType())) {
                 Sign sign = (Sign) block.getState();
                 Optional<JinroGame> optional = this.plugin.isPlayer(player.getUniqueId());
                 if (optional.isPresent()) {
                     JinroGame game = optional.get();
                     for (UUID uuid : game.getPlayers()) {
-                        if (!(sign.getLine(1).equalsIgnoreCase("§1§l§n" + this.plugin.getName(uuid)) && sign.getLine(3).equalsIgnoreCase(TO_FORTUNE)))
+                        if (!(sign.getLine(1).equalsIgnoreCase("§1§l§n" + this.plugin.getName(uuid)) && sign.getLine(3).equalsIgnoreCase(GameManager.TO_FORTUNE)))
                             continue;
                         if (!this.item_perm.canUse(optional.get().getJob(player.getUniqueId()).get())) {
                             player.sendMessage(String.format(this.item_perm.getErrorMessage(), this.name));

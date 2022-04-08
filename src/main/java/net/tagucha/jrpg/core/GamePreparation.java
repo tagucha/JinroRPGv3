@@ -1,5 +1,7 @@
-package net.tagucha.jrpg;
+package net.tagucha.jrpg.core;
 
+import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.job.GameJob;
 import net.tagucha.jrpg.menu.Icon;
 import net.tagucha.jrpg.menu.Menu;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -84,10 +86,10 @@ public class GamePreparation implements Listener {
                 player.closeInventory();
             }
         });
-        this.dream_menu.add(6, new Icon(Material.IRON_SWORD, GameJob.KNIGHT.getRealName(), new ArrayList<>()) {
+        this.dream_menu.add(6, new Icon(Material.WRITABLE_BOOK, GameJob.CORONER.getRealName(), new ArrayList<>()) {
             @Override
             public void onClick(Player player) {
-                GamePreparation.this.wish(player, GameJob.KNIGHT);
+                GamePreparation.this.wish(player, GameJob.CORONER);
                 player.closeInventory();
             }
         });

@@ -7,8 +7,8 @@ import net.tagucha.jrpg.item.TimePermission;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import net.tagucha.jrpg.GameJob;
-import net.tagucha.jrpg.JinroGame;
+import net.tagucha.jrpg.job.GameJob;
+import net.tagucha.jrpg.core.JinroGame;
 import net.tagucha.jrpg.PluginMain;
 
 import java.util.Arrays;
