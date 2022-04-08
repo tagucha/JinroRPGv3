@@ -22,7 +22,7 @@ public enum ItemPermission {
     WEREWOLF() {
         @Override
         public boolean canUse(GameJob job) {
-            return job == GameJob.WEREWOLF;
+            return job.side == 1;
         }
 
         @Override
@@ -36,7 +36,7 @@ public enum ItemPermission {
     NOT_WEREWOLF() {
         @Override
         public boolean canUse(GameJob job) {
-            return job != GameJob.WEREWOLF;
+            return job.side != 1;
         }
 
         @Override

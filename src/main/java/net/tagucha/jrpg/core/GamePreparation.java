@@ -110,6 +110,20 @@ public class GamePreparation implements Listener {
                 player.closeInventory();
             }
         });
+        this.dream_menu.add(13, new Icon(Material.WRITTEN_BOOK, GameJob.SMART_WEREWOLF.getRealName(), new ArrayList<>()) {
+            @Override
+            public void onClick(Player player) {
+                GamePreparation.this.wish(player, GameJob.SMART_WEREWOLF);
+                player.closeInventory();
+            }
+        });
+        this.dream_menu.add(14, new Icon(Material.BEEF, GameJob.INSANE_WEREWOLF.getRealName(), new ArrayList<>()) {
+            @Override
+            public void onClick(Player player) {
+                GamePreparation.this.wish(player, GameJob.INSANE_WEREWOLF);
+                player.closeInventory();
+            }
+        });
 
         this.dream_menu.add(18, Icon.createDummyIcon(Material.NETHER_STAR,1));
         this.dream_menu.add(19, Icon.createDummyIcon(Material.BLACK_STAINED_GLASS_PANE, 1));

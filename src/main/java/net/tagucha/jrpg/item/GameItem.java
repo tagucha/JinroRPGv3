@@ -26,6 +26,8 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 public class GameItem implements Listener {
+    public record ConfigKey(String key, ItemType type) {}
+
     protected final PluginMain plugin;
     protected final Material material;
     protected final String name;
@@ -190,16 +192,6 @@ public class GameItem implements Listener {
                     }
                 }
             }
-        }
-    }
-
-    public static class ConfigKey {
-        public final String key;
-        public final ItemType type;
-
-        public ConfigKey(String key, ItemType type) {
-            this.key = key;
-            this.type = type;
         }
     }
 

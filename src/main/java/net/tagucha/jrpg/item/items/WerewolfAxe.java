@@ -7,6 +7,7 @@ import net.tagucha.jrpg.event.PlayerAttackEvent;
 import net.tagucha.jrpg.item.GameItem;
 import net.tagucha.jrpg.item.ItemPermission;
 import net.tagucha.jrpg.item.TimePermission;
+import net.tagucha.jrpg.job.GameJob;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -42,7 +43,7 @@ public class WerewolfAxe extends GameItem {
 
     @Override
     protected void onAttack(JinroGame game, PlayerAttackEvent event) {
-        if (game.timer.getClock() == GameTimer.Clock.DAY && game.axe_used.contains(event.getAttacker().getUniqueId())) {
+        if (game.timer.getClock() == GameTimer.Clock.DAY && game.getAxeUsed().contains(event.getAttacker().getUniqueId())) {
             event.getAttacker().sendMessage(PluginMain.getLogo(ChatColor.RED) + " 昼のあいだは一度しか使えません");
             event.setCancelled(true);
             return;
@@ -53,10 +54,7 @@ public class WerewolfAxe extends GameItem {
         }
         event.getBaseEvent().setDamage(100);
         event.getAttacker().getInventory().setItemInMainHand(null);
-        this.plugin.getOnlinePlayers().forEach(player -> {
-            if (player.getWorld().equals(event.getAttacker().getWorld())) {
-                player.playSound(event.getAttacker().getLocation(), Sound.ITEM_TOTEM_USE, (float) player.getLocation().distance(event.getAttacker().getLocation()), 1);
-            }
-        });
+        event.getTarget().getWorld().playSound(event.getTarget().getLocation(), Sound.ITEM_TOTEM_USE, 1.0F, 1);
+        if(game.getJob(event.getAttacker().getUniqueId()).filter(job -> !job.equals(GameJob.INSANE_WEREWOLF)).isPresent()) game.getAxeUsed().add(event.getAttacker().getUniqueId());
     }
 }

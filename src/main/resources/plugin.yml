@@ -1,5 +1,5 @@
-name: NewJinroRPG
-version: 1.3-SNAPSHOT
+name: JinroRPG
+version: 1.4-SNAPSHOT
 main: net.tagucha.jrpg.PluginMain
 description: This game was created by WhiteTails, which is one of YouTuber groups, and this plugin was created by tagucha.
 api-version: 1.18

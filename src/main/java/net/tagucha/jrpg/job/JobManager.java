@@ -2,6 +2,7 @@ package net.tagucha.jrpg.job;
 
 import net.tagucha.jrpg.PluginMain;
 import net.tagucha.jrpg.event.GameChangeToDayEvent;
+import net.tagucha.jrpg.event.GameChangeToNightEvent;
 import net.tagucha.jrpg.event.GameEndEvent;
 import net.tagucha.jrpg.event.GamePlayerKillPlayerEvent;
 import net.tagucha.jrpg.item.items.Bread;
@@ -30,6 +31,14 @@ public class JobManager implements Listener {
         if (event.getGame().isAlive(GameJob.BAKER)) {
             event.getGame().getAlive().forEach(uuid -> plugin.getPlayer(uuid).ifPresent(player -> player.getInventory().addItem(new Bread(this.plugin).getItemStack(1, event.getGame().timer.getDay()))));
         }
+    }
+
+    @EventHandler
+    public void onChangeToNight(GameChangeToNightEvent event) {
+        event.getGame().getWorkers(GameJob.SMART_WEREWOLF).stream().filter(event.getGame()::isAlive).forEach(uuid -> {
+            event.getGame().getHeart().put(uuid, event.getGame().getHeart().getOrDefault(uuid, 0) + 1);
+            event.getGame().sendMessage(uuid, PluginMain.getLogo(ChatColor.RED) + " 残りの占い可能回数: " + event.getGame().getHeart().getOrDefault(uuid, 0) + "回");
+        });
     }
 
     @EventHandler

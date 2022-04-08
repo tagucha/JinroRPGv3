@@ -38,8 +38,8 @@ public class GameConfig {
         this.plugin.ITEMS.merchant_recipes.get(GameItem.ItemType.SUPPORT).clear();
         this.plugin.ITEMS.merchant_recipes.get(GameItem.ItemType.COMBAT).clear();
         this.plugin.ITEMS.items.forEach(item -> {
-            GameItem.ItemType type = item.getConfigKey().type;
-            String key = item.getConfigKey().key;
+            GameItem.ItemType type = item.getConfigKey().type();
+            String key = item.getConfigKey().key();
             String key_cmd = String.format("items.%s.%s.custom_model_data", type.key, key);
             String key_price = String.format("items.%s.%s.price", type.key, key);
             if (config.contains(key_price)) {

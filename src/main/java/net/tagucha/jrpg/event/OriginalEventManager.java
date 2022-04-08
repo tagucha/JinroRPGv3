@@ -11,9 +11,7 @@ public record OriginalEventManager(PluginMain plugin) implements Listener {
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
         if (event.isCancelled()) return;
-        if (event.getDamager() instanceof Player && event.getEntity() instanceof LivingEntity) {
-            Player attacker = (Player) event.getDamager();
-            LivingEntity target = (LivingEntity) event.getEntity();
+        if (event.getDamager() instanceof Player attacker && event.getEntity() instanceof LivingEntity target) {
             PlayerAttackEvent called_event = new PlayerAttackEvent(attacker, target, event);
             if (!called_event.isCancelled()) {
                 this.plugin.getServer().getPluginManager().callEvent(called_event);

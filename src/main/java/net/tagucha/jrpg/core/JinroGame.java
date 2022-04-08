@@ -43,8 +43,8 @@ public class JinroGame {
 
     public final HashSet<Skeleton> skeletons = new HashSet<>();
 
-    public final HashSet<UUID> axe_used = new HashSet<>();
-    public final HashSet<UUID> cursed = new HashSet<>();
+    private final HashSet<UUID> axe_used = new HashSet<>();
+    private final HashSet<UUID> cursed = new HashSet<>();
 
     public JinroGame(PluginMain plugin, World world) throws GameException{
         this.plugin = plugin;
@@ -122,6 +122,13 @@ public class JinroGame {
         return heart;
     }
 
+    public HashSet<UUID> getAxeUsed() {
+        return axe_used;
+    }
+
+    public HashSet<UUID> getCursed() {
+        return cursed;
+    }
 
     public void start(HashSet<UUID> players, Map<UUID,GameJob> wish, HashSet<UUID> spectators) {
         this.plugin.getGameConfig().reload();
@@ -280,12 +287,12 @@ public class JinroGame {
             }
         }
         return switch (pop) {
-            case 3, 4, 5 -> new int[]{1, 0, 0, 0, 0, 0, 0};
-            case 6, 7 -> new int[]{1, 1, 0, 0, 0, 0, 0};
-            case 8, 9 -> new int[]{2, 1, 0, 0, 0, 0, 0};
-            case 10, 11 -> new int[]{2, 1, 0, 1, 0, 0, 0};
-            case 12, 13, 14 -> new int[]{3, 1, 0, 1, 0, 0, 0};
-            case 15, 16 -> new int[]{3, 1, 0, 1, 1, 1, 0};
+            case 3, 4, 5 -> new int[]{1, 0, 0, 0, 0, 0, 0, 0, 0};
+            case 6, 7 -> new int[]{1, 1, 0, 0, 0, 0, 0, 0, 0};
+            case 8, 9 -> new int[]{2, 1, 0, 0, 0, 0, 0, 0, 0};
+            case 10, 11 -> new int[]{2, 1, 0, 1, 0, 0, 0, 0, 0};
+            case 12, 13, 14 -> new int[]{3, 1, 0, 1, 0, 0, 0, 0, 0};
+            case 15, 16 -> new int[]{3, 1, 0, 1, 0, 0, 1, 1, 0};
             default -> null;
         };
     }

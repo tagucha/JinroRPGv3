@@ -67,35 +67,13 @@ public class GameItems {
         this.ASH_OF_MEDIUM = this.register(new AshOfMedium(this.plugin), 4);
     }
 
-/*
-    public void reset() {
-        this.merchant_recipes.clear();
-        for (GameItem.ItemType type : GameItem.ItemType.values()) this.merchant_recipes.put(type, new HashMap<>());
-        ItemUtil.setPriceAndCMD(this.merchant_recipes.get(GameItem.ItemType.COMBAT).get("bow"),2,128);
-        ItemUtil.setPriceAndCMD(this.merchant_recipes.get(GameItem.ItemType.COMBAT).get("arrow"),2,128);
-        ItemUtil.setPriceAndCMD(this.merchant_recipes.get(GameItem.ItemType.COMBAT).get("cooked_beef"),1,128);
-        ItemUtil.setPriceAndCMD(this.merchant_recipes.get(GameItem.ItemType.COMBAT).get("skeleton_killer"),4,128);
-        ItemUtil.setPriceAndCMD(this.merchant_recipes.get(GameItem.ItemType.COMBAT).get("stan_grenade"),2,128);
-        ItemUtil.setPriceAndCMD(this.merchant_recipes.get(GameItem.ItemType.COMBAT).get("werewolf_axe"),4,128);
-        ItemUtil.setPriceAndCMD(this.merchant_recipes.get(GameItem.ItemType.COMBAT).get("speed_potion"),1,128);
-        ItemUtil.setPriceAndCMD(this.merchant_recipes.get(GameItem.ItemType.COMBAT).get("invisible_potion"),4,128);
-        ItemUtil.setPriceAndCMD(this.merchant_recipes.get(GameItem.ItemType.COMBAT).get("heart_of_fortuneteller"),4,128);
-        ItemUtil.setPriceAndCMD(this.merchant_recipes.get(GameItem.ItemType.SUPPORT).get("pray_of_knight"),3,128);
-        ItemUtil.setPriceAndCMD(this.merchant_recipes.get(GameItem.ItemType.SUPPORT).get("eye_of_mad"),4,128);
-        ItemUtil.setPriceAndCMD(this.merchant_recipes.get(GameItem.ItemType.SUPPORT).get("sacred_cross"),2,128);
-        ItemUtil.setPriceAndCMD(this.merchant_recipes.get(GameItem.ItemType.SUPPORT).get("eye_of_providence"),2,128);
-        ItemUtil.setPriceAndCMD(this.merchant_recipes.get(GameItem.ItemType.SUPPORT).get("talisman"),2,128);
-    }
-
- */
-
     public ItemStack register(GameItem item, int emerald) {
         ItemStack stack = item.register();
         if (emerald > 0) {
             MerchantRecipe recipe = new MerchantRecipe(stack, Integer.MAX_VALUE);
             recipe.setIngredients(Collections.singletonList(new ItemStack(Material.EMERALD, emerald)));
             recipe.setExperienceReward(false);
-            this.merchant_recipes.get(item.getConfigKey().type).put(item.getConfigKey().key, recipe);
+            this.merchant_recipes.get(item.getConfigKey().type()).put(item.getConfigKey().key(), recipe);
             this.items.add(item);
         }
         this.match.put(item, stack);

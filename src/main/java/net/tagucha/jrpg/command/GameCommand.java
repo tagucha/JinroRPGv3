@@ -99,7 +99,7 @@ public class GameCommand extends PluginCommand {
                             break;
                         }
                         this.checkPermission(sender, "jinro.command.give");
-                        Optional<GameItem> opt = this.plugin.ITEMS.items.stream().filter(item -> item.getConfigKey().key.equalsIgnoreCase(args[1])).findAny();
+                        Optional<GameItem> opt = this.plugin.ITEMS.items.stream().filter(item -> item.getConfigKey().key().equalsIgnoreCase(args[1])).findAny();
                         if (opt.isPresent()) ((Player) sender).getInventory().addItem(this.plugin.ITEMS.getItem(opt.get()));
                         else sender.sendMessage(String.format("%s%s", PluginMain.getLogo(ChatColor.RED), " そのようなアイテムは存在しません。"));
                     } else if (args[0].equalsIgnoreCase("sign")) {
@@ -180,8 +180,7 @@ public class GameCommand extends PluginCommand {
                     this.checkAndPut(sender,list,"combat",args[1],"jinro.command.spawn");
                     this.checkAndPut(sender,list,"support",args[1],"jinro.command.spawn");
                 } else if (this.matchParameter(args, new String[]{"give"})) {
-//                    Arrays.stream(GameItems.class.getFields()).filter(field -> field.getType().equals(ItemStack.class)).map(Field::getName).forEach(arg -> this.checkAndPut(sender, list, arg, args[1],"jinro.command.give"));
-                    this.plugin.ITEMS.items.stream().map(item -> item.getConfigKey().key.toUpperCase()).forEach(arg -> this.checkAndPut(sender, list, arg, args[1],"jinro.command.give"));
+                    this.plugin.ITEMS.items.stream().map(item -> item.getConfigKey().key().toUpperCase()).forEach(arg -> this.checkAndPut(sender, list, arg, args[1],"jinro.command.give"));
                 } else if (this.matchParameter(args, new String[]{"sign"})) {
                     this.checkAndPut(sender,list,"SPRUCE_SIGN",args[1],"jinro.command.sign");
                     this.checkAndPut(sender,list,"ACACIA_SIGN",args[1],"jinro.command.sign");

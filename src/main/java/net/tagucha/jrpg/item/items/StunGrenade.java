@@ -54,16 +54,13 @@ public class StunGrenade extends GameItem {
     public void onHitGrenade(ProjectileHitEvent event) {
         event.getEntity().getMetadata("grenade").forEach(value ->  {
             if(value.getOwningPlugin() == this.plugin && value.asBoolean()) {
-                if (event.getHitEntity() instanceof LivingEntity && event.getEntity() instanceof Snowball) {
+                if (event.getHitEntity() instanceof LivingEntity target && event.getEntity() instanceof Snowball grenade) {
                     Player attacker = (Player) event.getEntity().getShooter();
-                    LivingEntity target = (LivingEntity) event.getHitEntity();
-                    Snowball grenade = (Snowball) event.getEntity();
                     HitStunGrenadeEvent evt = new HitStunGrenadeEvent(attacker,target,grenade);
                     if (!evt.isCancelled()) {
                         target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,100,2),false);
                         target.addPotionEffect(new PotionEffect(PotionEffectType.JUMP,100,128),false);
-                        if (target instanceof Player) {
-                            Player player = (Player) target;
+                        if (target instanceof Player player) {
                             player.setWalkSpeed(0.0F);
                             new BukkitRunnable() {
                                 public void run() {

@@ -88,9 +88,9 @@ public class TridentOfRancor extends GameItem {
         Trident trident = (Trident) event.getEntity();
         if (!trident.getItem().isSimilar(this.plugin.ITEMS.TRIDENT_OF_RANCOR)) return;
         this.plugin.isPlayer(event.getHitEntity().getUniqueId()).ifPresent(game -> {
-            if (game.cursed.contains(event.getHitEntity().getUniqueId())) ((Player) event.getHitEntity()).damage(100, ((Player) trident.getShooter()));
+            if (game.getCursed().contains(event.getHitEntity().getUniqueId())) ((Player) event.getHitEntity()).damage(100, ((Player) trident.getShooter()));
             else {
-                game.cursed.add(event.getHitEntity().getUniqueId());
+                game.getCursed().add(event.getHitEntity().getUniqueId());
                 ((Player) event.getHitEntity()).damage(0, ((Player) trident.getShooter()));
             }
             flying_tridents.remove(trident.getUniqueId());

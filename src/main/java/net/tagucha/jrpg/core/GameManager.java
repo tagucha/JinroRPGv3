@@ -1,5 +1,6 @@
 package net.tagucha.jrpg.core;
 
+import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
 import net.tagucha.jrpg.PluginMain;
 import net.tagucha.jrpg.event.*;
 import net.tagucha.jrpg.job.GameJob;
@@ -7,6 +8,8 @@ import net.tagucha.jrpg.packet.UndarkCore;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_18_R1.util.CraftChatMessage;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -24,7 +27,6 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -45,6 +47,11 @@ public record GameManager(PluginMain plugin) implements Listener {
                 .filter(player -> event.getGame().getSpectators().contains(player.getUniqueId()))
                 .filter(player -> !player.getGameMode().equals(GameMode.SPECTATOR))
                 .forEach(player -> player.setGameMode(GameMode.SPECTATOR));
+        event.getGame().getAlive().stream().map(uuid -> plugin().getPlayer(uuid)).filter(Optional::isPresent).map(Optional::get).forEach(player -> {
+            String message = String.format("%s%s占い可能回数%s: %d回",ChatColor.DARK_BLUE, ChatColor.BOLD, ChatColor.WHITE, event.getGame().getHeart().getOrDefault(player.getUniqueId(), 0));
+            ClientboundSetActionBarTextPacket packet = new ClientboundSetActionBarTextPacket(CraftChatMessage.fromStringOrNull(message));
+            ((CraftPlayer) player).getHandle().b.a(packet);
+        });
     }
 
     @EventHandler
@@ -171,7 +178,7 @@ public record GameManager(PluginMain plugin) implements Listener {
         });
         event.getGame().getPrayers().clear();
         event.getGame().getTalisman().clear();
-        event.getGame().axe_used.clear();
+        event.getGame().getAxeUsed().clear();
         event.getGame().noticeMessage(PluginMain.getLogo(ChatColor.GOLD) + " 昼になりました");
     }
 

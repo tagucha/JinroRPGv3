@@ -28,8 +28,8 @@ public class Blunt extends GameItem {
     @Override
     public Consumer<ItemStack> toUpdateItem(Object... objects) {
         return stack -> {
-            if (this.plugin.getGameConfig().isReloaded()) if (this.plugin.getGameConfig().getCustomModelData().containsKey(this.getConfigKey().key))
-                ItemUtil.setCMD(stack, this.plugin.getGameConfig().getCustomModelData().get(this.getConfigKey().key));
+            if (this.plugin.getGameConfig().isReloaded()) if (this.plugin.getGameConfig().getCustomModelData().containsKey(this.getConfigKey().key()))
+                ItemUtil.setCMD(stack, this.plugin.getGameConfig().getCustomModelData().get(this.getConfigKey().key()));
         };
     }
 }
