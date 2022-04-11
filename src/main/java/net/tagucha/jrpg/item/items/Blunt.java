@@ -5,14 +5,14 @@ import net.tagucha.jrpg.item.GameItem;
 import net.tagucha.jrpg.item.TimePermission;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.item.ItemPermission;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;
 
 public class Blunt extends GameItem {
-    public Blunt(PluginMain plugin) {
+    public Blunt(JinroRPG plugin) {
         super(
                 plugin,
                 Material.STICK,

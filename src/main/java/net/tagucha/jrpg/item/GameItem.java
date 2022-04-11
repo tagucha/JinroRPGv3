@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import net.tagucha.jrpg.core.JinroGame;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +28,7 @@ import java.util.function.Consumer;
 public class GameItem implements Listener {
     public record ConfigKey(String key, ItemType type) {}
 
-    protected final PluginMain plugin;
+    protected final JinroRPG plugin;
     protected final Material material;
     protected final String name;
     protected final List<String> lore;
@@ -39,7 +39,7 @@ public class GameItem implements Listener {
     private boolean isLighting = false;
     private int default_amount = 1;
 
-    public GameItem(PluginMain plugin, Material material, String name, List<String> lore, int custom_model_data, ItemPermission item_perm, TimePermission time_perm, ConfigKey config_key) {
+    public GameItem(JinroRPG plugin, Material material, String name, List<String> lore, int custom_model_data, ItemPermission item_perm, TimePermission time_perm, ConfigKey config_key) {
         this.plugin = plugin;
         this.material = material;
         this.name = name;
@@ -136,7 +136,7 @@ public class GameItem implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.LOW)
     public void onAttackEvent(PlayerAttackEvent event) {
         final Player player = event.getAttacker();
         if (this.plugin.ITEMS.getItem(this).isSimilar(player.getInventory().getItemInMainHand())) {
@@ -156,7 +156,7 @@ public class GameItem implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.LOW)
     public void onDamageEvent(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             final Player player = (Player) event.getEntity();

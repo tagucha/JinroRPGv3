@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.core;
 
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.item.GameItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,7 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 
-public record GameMerchant(PluginMain plugin) {
+public record GameMerchant(JinroRPG plugin) {
     public Villager spawnCombatMerchant(Location location) {
         Villager villager = spawnSimpleMerchant(location);
         villager.setCustomName(ChatColor.GREEN + "戦闘");

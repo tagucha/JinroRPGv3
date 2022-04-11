@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.config;
 
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.job.GameJob;
 import net.tagucha.jrpg.util.ItemUtil;
 import net.tagucha.jrpg.item.GameItem;
@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Properties;
 
 public class GameConfig {
-    private final PluginMain plugin;
+    private final JinroRPG plugin;
     private FileConfiguration config;
     private final Map<String, Integer> custom_model_data = new HashMap<>();
     private final Map<Integer,int[]> jobs = new HashMap<>();
@@ -25,7 +25,7 @@ public class GameConfig {
     private int max_player = 16;
     private boolean isReloaded = false;
 
-    public GameConfig(PluginMain plugin) {
+    public GameConfig(JinroRPG plugin) {
         this.plugin = plugin;
     }
 

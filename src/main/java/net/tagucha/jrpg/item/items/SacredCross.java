@@ -9,12 +9,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import net.tagucha.jrpg.job.GameJob;
 import net.tagucha.jrpg.core.JinroGame;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 
 import java.util.Arrays;
 
 public class SacredCross extends GameItem {
-    public SacredCross(PluginMain plugin) {
+    public SacredCross(JinroRPG plugin) {
         super(
                 plugin,
                 Material.NETHER_STAR,
@@ -40,6 +40,7 @@ public class SacredCross extends GameItem {
                 }
                 event.getAttacker().getInventory().getItemInMainHand().setAmount(event.getAttacker().getInventory().getItemInMainHand().getAmount() - 1);
             });
+            event.getTarget().addScoreboardTag("sacred_cross");
         }
     }
 }

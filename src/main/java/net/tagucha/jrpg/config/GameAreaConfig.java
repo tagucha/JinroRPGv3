@@ -2,7 +2,7 @@ package net.tagucha.jrpg.config;
 
 import net.minecraft.util.Tuple;
 import net.tagucha.jrpg.core.JinroGame;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.exception.GameAreaInputException;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class GameAreaConfig {
-    private final PluginMain plugin;
+    private final JinroRPG plugin;
     private final Random random;
     private final World world;
     private final JinroGame game;
@@ -25,9 +25,10 @@ public class GameAreaConfig {
     private final List<Location> locations = new ArrayList<>();
     private final Map<Location, Integer> count = new HashMap<>();
     private final Map<Integer, Location> map = new HashMap<>();
+    private final Location spawn;
     private final int number;
 
-    public GameAreaConfig(PluginMain plugin, JinroGame game, World world) throws GameAreaInputException {
+    public GameAreaConfig(JinroRPG plugin, JinroGame game, World world) throws GameAreaInputException {
         this.plugin = plugin;
         this.random = new Random();
         this.world = world;
@@ -75,19 +76,25 @@ public class GameAreaConfig {
             locations.addAll(area.getSpawnableLocations());
             if (type == Type.PILE) locs.forEach(loc->this.count.put(loc,this.count.getOrDefault(loc,0)+1));
         }
+        if (config.contains("spawn")) {
+            double x = this.getDouble("spawn.x");
+            double y = this.getDouble("spawn.y");
+            double z = this.getDouble("spawn.z");
+            this.spawn = new Location(world, x, y, z);
+        } else {
+            this.spawn = null;
+        }
         this.number = check().a();
     }
 
     public double getDouble(String key) throws GameAreaInputException{
-        if (!config.contains(key)) throw new GameAreaInputException(this.game,String.format("エリア設定ファイル(%s)の中に%sがないんだが?",this.config.getName(),key));
+        if (!config.contains(key)) throw new GameAreaInputException(this.game,String.format("エリア設定ファイル(%s)の中に%sがありません",this.config.getName(),key));
         String arg = config.getString(key, "null");
         try {
             return Double.parseDouble(arg);
         } catch (NumberFormatException e) {
-            throw new GameAreaInputException(this.game,String.format("エリア設定ファイル(%s)の中に%sが数値じゃないんだが?",this.config.getName(),key));
+            throw new GameAreaInputException(this.game,String.format("エリア設定ファイル(%s)の中に%sが数値ではありません",this.config.getName(),key));
         }
-//        if (!config.isDouble(key)) throw new GameAreaInputException(this.game,String.format("エリア設定ファイル(%s)の中に%sが数値じゃないんだが?",this.config.getName(),key));
-//        return this.config.getDouble(key);
     }
 
     public Tuple<Integer,Map<Integer,Location>> check() {
@@ -98,6 +105,10 @@ public class GameAreaConfig {
 
     public Location getRandom() {
         return this.map.get(this.random.nextInt(this.number));
+    }
+
+    public Optional<Location> getSpawnPoint() {
+        return Optional.ofNullable(this.spawn);
     }
 
     public enum Shape {

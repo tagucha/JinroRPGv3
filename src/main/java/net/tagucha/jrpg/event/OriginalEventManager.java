@@ -1,14 +1,15 @@
 package net.tagucha.jrpg.event;
 
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-public record OriginalEventManager(PluginMain plugin) implements Listener {
-    @EventHandler
+public record OriginalEventManager(JinroRPG plugin) implements Listener {
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onDamage(EntityDamageByEntityEvent event) {
         if (event.isCancelled()) return;
         if (event.getDamager() instanceof Player attacker && event.getEntity() instanceof LivingEntity target) {

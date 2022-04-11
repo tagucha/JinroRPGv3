@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.menu;
 
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 public class Menu implements Listener {
     public static final ItemStack NULL;
 
-    private final PluginMain plugin;
+    private final JinroRPG plugin;
     private String title;
     private int size;
     private final Map<Integer,Icon> map;
@@ -30,14 +30,14 @@ public class Menu implements Listener {
     private ItemStack menu_item = null;
 
     static {
-        NULL = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        NULL = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
         ItemMeta meta = NULL.getItemMeta();
         meta.setDisplayName(" ");
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         NULL.setItemMeta(meta);
     }
 
-    public Menu(PluginMain plugin,String title, int size, Map<Integer,Icon> map) {
+    public Menu(JinroRPG plugin, String title, int size, Map<Integer,Icon> map) {
         this.plugin = plugin;
         this.title = title;
         this.size = cast(size);
@@ -45,12 +45,12 @@ public class Menu implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this,plugin);
     }
 
-    public Menu(PluginMain plugin,String title,int size) {
+    public Menu(JinroRPG plugin, String title, int size) {
         this(plugin,title,size,new HashMap<>());
     }
 
     public void add(int i,Icon icon) throws IndexOutOfBoundsException{
-        if (i  < 0 || size <= i) throw new IndexOutOfBoundsException("メニューの大きさ越えてんだけどwww");
+        if (i  < 0 || size <= i) throw new IndexOutOfBoundsException("メニューの大きさ越えています");
         map.remove(i);
         map.put(i,icon);
     }

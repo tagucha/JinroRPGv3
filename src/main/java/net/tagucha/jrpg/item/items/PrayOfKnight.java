@@ -8,12 +8,12 @@ import org.bukkit.Material;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import net.tagucha.jrpg.core.JinroGame;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 
 import java.util.Arrays;
 
 public class PrayOfKnight extends GameItem {
-    public PrayOfKnight(PluginMain plugin) {
+    public PrayOfKnight(JinroRPG plugin) {
         super(plugin,
                 Material.ARMOR_STAND,
                 ChatColor.WHITE + "騎士の祈り",
@@ -43,9 +43,9 @@ public class PrayOfKnight extends GameItem {
                     }
                 }.runTaskLater(this.plugin,1);
             }
-            event.getPlayer().sendMessage(PluginMain.getLogo(ChatColor.RED) + " 騎士の祈り を使用しました");
+            event.getPlayer().sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 騎士の祈り を使用しました");
         } else {
-            event.getPlayer().sendMessage(PluginMain.getLogo(ChatColor.RED) + " 既に使用しています");
+            event.getPlayer().sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 既に使用しています");
             event.setCancelled(true);
         }
     }

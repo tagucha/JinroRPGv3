@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.item.GameItem;
 import net.tagucha.jrpg.item.ItemPermission;
 
@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.function.Consumer;
 
 public class NormalBow extends GameItem {
-    public NormalBow(PluginMain plugin) {
+    public NormalBow(JinroRPG plugin) {
         super(
                 plugin,
                 Material.BOW,

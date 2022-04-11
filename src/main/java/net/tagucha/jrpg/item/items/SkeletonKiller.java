@@ -3,11 +3,12 @@ package net.tagucha.jrpg.item.items;
 import net.tagucha.jrpg.item.TimePermission;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import net.tagucha.jrpg.core.JinroGame;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.event.PlayerAttackEvent;
 import net.tagucha.jrpg.item.GameItem;
 import net.tagucha.jrpg.item.ItemPermission;
@@ -18,7 +19,7 @@ import java.util.function.Consumer;
 public class SkeletonKiller extends GameItem {
     private final int lvl;
 
-    public SkeletonKiller(PluginMain plugin, int lvl) {
+    public SkeletonKiller(JinroRPG plugin, int lvl) {
         super(
                 plugin,
                 Material.WOODEN_SWORD,
@@ -51,7 +52,9 @@ public class SkeletonKiller extends GameItem {
 
     @Override
     protected void onAttack(JinroGame game, PlayerAttackEvent event) {
-        event.getAttacker().getInventory().setItemInMainHand(plugin.ITEMS.SKELETON_KILLER[this.lvl - 1]);
-        event.getBaseEvent().setDamage(100);
+        if (event.getTarget().getType().equals(EntityType.SKELETON)) {
+            event.getAttacker().getInventory().setItemInMainHand(plugin.ITEMS.SKELETON_KILLER[this.lvl - 1]);
+            event.getBaseEvent().setDamage(100);
+        }
     }
 }

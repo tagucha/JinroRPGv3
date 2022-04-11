@@ -2,7 +2,7 @@ package net.tagucha.jrpg.item.items;
 
 import net.tagucha.jrpg.item.TimePermission;
 import org.bukkit.Material;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.item.GameItem;
 import net.tagucha.jrpg.item.ItemPermission;
 import org.bukkit.inventory.ItemStack;
@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.function.Consumer;
 
 public class CookedBeef extends GameItem {
-    public CookedBeef(PluginMain plugin) {
+    public CookedBeef(JinroRPG plugin) {
         super(
                 plugin,
                 Material.COOKED_BEEF,

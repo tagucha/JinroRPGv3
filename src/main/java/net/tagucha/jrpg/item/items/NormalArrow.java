@@ -5,12 +5,12 @@ import net.tagucha.jrpg.item.ItemPermission;
 import net.tagucha.jrpg.item.TimePermission;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 
 import java.util.Arrays;
 
 public class NormalArrow extends GameItem {
-    public NormalArrow(PluginMain plugin) {
+    public NormalArrow(JinroRPG plugin) {
         super(
                 plugin,
                 Material.ARROW,

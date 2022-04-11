@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.core;
 
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.job.GameJob;
 import net.tagucha.jrpg.menu.Icon;
 import net.tagucha.jrpg.menu.Menu;
@@ -28,7 +28,7 @@ public class GamePreparation implements Listener {
     private static final ClickEvent CLICK_EVENT = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/jinro join");
     private static final HoverEvent COMMAND_MESSAGE = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent(ChatColor.WHITE + "メッセージをクリックで参加できます。")});
 
-    private final PluginMain plugin;
+    private final JinroRPG plugin;
     private final int max_time;
     private int time;
     private final Map<UUID, GameJob> wish = new HashMap<>();
@@ -40,7 +40,7 @@ public class GamePreparation implements Listener {
 
     private final Menu dream_menu;
 
-    public GamePreparation(PluginMain plugin, World world, int time) throws GameException {
+    public GamePreparation(JinroRPG plugin, World world, int time) throws GameException {
         this.plugin = plugin;
         this.max_time = time;
         this.time = time;
@@ -51,13 +51,13 @@ public class GamePreparation implements Listener {
         this.dream_menu = new Menu(plugin,String.format("%s%s希望する役職を選んでください", ChatColor.GOLD, ChatColor.BOLD),27);
         this.dream_menu.setMenuItem(Material.CLOCK, stack -> {
             ItemMeta meta = stack.getItemMeta();
-            meta.setDisplayName(String.format("%s役職希望メニュー",PluginMain.getLogo(ChatColor.GOLD)));
+            meta.setDisplayName(String.format("%s役職希望メニュー", JinroRPG.getLogo(ChatColor.GOLD)));
             meta.setLore(Collections.singletonList(String.format("%s右クリックで使用できます",ChatColor.WHITE)));
             stack.setItemMeta(meta);
         });
 
-        this.dream_menu.add(0, Icon.createDummyIcon(Material.WHEAT, 1));
-        this.dream_menu.add(1, Icon.createDummyIcon(Material.BLACK_STAINED_GLASS_PANE, 1));
+        this.dream_menu.add(0, Icon.createDummyIcon(Material.WHEAT, ChatColor.GREEN + "村人陣営", 1));
+        this.dream_menu.add(1, Icon.createDummyIcon(Material.BLACK_STAINED_GLASS_PANE, " ", 1));
         this.dream_menu.add(2, new Icon(Material.WHEAT, GameJob.VILLAGER.getRealName(), new ArrayList<>()) {
             @Override
             public void onClick(Player player) {
@@ -94,8 +94,8 @@ public class GamePreparation implements Listener {
             }
         });
 
-        this.dream_menu.add(9, Icon.createDummyIcon(Material.STONE_AXE, 1));
-        this.dream_menu.add(10, Icon.createDummyIcon(Material.BLACK_STAINED_GLASS_PANE, 1));
+        this.dream_menu.add(9, Icon.createDummyIcon(Material.STONE_AXE, ChatColor.DARK_RED + "人狼陣営", 1));
+        this.dream_menu.add(10, Icon.createDummyIcon(Material.BLACK_STAINED_GLASS_PANE, " ",1));
         this.dream_menu.add(11, new Icon(Material.STONE_AXE, GameJob.WEREWOLF.getRealName(), new ArrayList<>()) {
             @Override
             public void onClick(Player player) {
@@ -125,8 +125,8 @@ public class GamePreparation implements Listener {
             }
         });
 
-        this.dream_menu.add(18, Icon.createDummyIcon(Material.NETHER_STAR,1));
-        this.dream_menu.add(19, Icon.createDummyIcon(Material.BLACK_STAINED_GLASS_PANE, 1));
+        this.dream_menu.add(18, Icon.createDummyIcon(Material.NETHER_STAR, ChatColor.RED + "第３陣営",1));
+        this.dream_menu.add(19, Icon.createDummyIcon(Material.BLACK_STAINED_GLASS_PANE, " ", 1));
         this.dream_menu.add(20, new Icon(Material.NETHER_STAR, GameJob.VAMPIRE.getRealName(), new ArrayList<>()) {
             @Override
             public void onClick(Player player) {
@@ -141,7 +141,7 @@ public class GamePreparation implements Listener {
         this.nextThread.runTaskLater(GamePreparation.this.plugin, 20);
         this.plugin.getLogger().info("JinroRPGの募集が開始されました.");
         this.plugin.noticeMessage(String.format("%s ゲームの募集を開始しました",
-                PluginMain.getLogo(ChatColor.GOLD)
+                JinroRPG.getLogo(ChatColor.GOLD)
         ), CLICK_EVENT, COMMAND_MESSAGE);
     }
 
@@ -160,25 +160,25 @@ public class GamePreparation implements Listener {
 
     public void sendAddMessage(Player player) {
         this.plugin.noticeMessage(String.format("%s %sさんがゲームに参加しました",
-                PluginMain.getLogo(ChatColor.GOLD),
+                JinroRPG.getLogo(ChatColor.GOLD),
                 player.getName()
         ), CLICK_EVENT, COMMAND_MESSAGE);
     }
 
     public void addPlayer(Player player) {
         if (this.players.contains(player.getUniqueId())) {
-            player.sendMessage(String.format("%s すでに参加しています",PluginMain.getLogo(ChatColor.GOLD)));
+            player.sendMessage(String.format("%s すでに参加しています", JinroRPG.getLogo(ChatColor.GOLD)));
             return;
         }
         this.players.add(player.getUniqueId());
         this.sendAddMessage(player);
-        player.sendMessage(String.format("%s 希望する役職があれば時計をクリックしてください",PluginMain.getLogo(ChatColor.GOLD)));
+        player.sendMessage(String.format("%s 希望する役職があれば時計をクリックしてください", JinroRPG.getLogo(ChatColor.GOLD)));
         this.dream_menu.getMenuItem().ifPresent(item -> player.getInventory().addItem(item));
     }
 
     public void addSpectator(Player player) {
         this.spectator.add(player.getUniqueId());
-        player.sendMessage(String.format("%s %sスペックテイターになりました", PluginMain.getLogo(ChatColor.GRAY), ChatColor.GRAY));
+        player.sendMessage(String.format("%s %sスペックテイターになりました", JinroRPG.getLogo(ChatColor.GRAY), ChatColor.GRAY));
     }
 
     private class TimerThread extends BukkitRunnable {
@@ -191,8 +191,9 @@ public class GamePreparation implements Listener {
     }
 
     public void wish(Player player, GameJob job) {
+        if (this.game.isStarted()) return;
         this.wish.put(player.getUniqueId(), job);
-        player.sendMessage(PluginMain.getLogo(ChatColor.AQUA) + " " + job.getRealName() + ChatColor.WHITE + "を希望しました");
+        player.sendMessage(JinroRPG.getLogo(ChatColor.AQUA) + " " + job.getRealName() + ChatColor.WHITE + "を希望しました");
     }
 
     public void cancelGame() {
@@ -201,5 +202,9 @@ public class GamePreparation implements Listener {
         else {
             this.bar.removeAll();
         }
+    }
+
+    public JinroGame getGame() {
+        return game;
     }
 }

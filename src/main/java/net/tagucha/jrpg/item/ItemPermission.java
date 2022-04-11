@@ -2,7 +2,7 @@ package net.tagucha.jrpg.item;
 
 import org.bukkit.ChatColor;
 import net.tagucha.jrpg.job.GameJob;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 
 public enum ItemPermission {
     ANYONE(){
@@ -14,7 +14,7 @@ public enum ItemPermission {
         @Override
         public String getErrorMessage() {
             return String.format("%s%s%sは誰でも使えます",
-                    PluginMain.getLogo(ChatColor.RED),
+                    JinroRPG.getLogo(ChatColor.RED),
                     ChatColor.DARK_RED,
                     "%s");
         }
@@ -28,7 +28,7 @@ public enum ItemPermission {
         @Override
         public String getErrorMessage() {
             return String.format("%s%s%sは人狼のみが使えます",
-                    PluginMain.getLogo(ChatColor.RED),
+                    JinroRPG.getLogo(ChatColor.RED),
                     ChatColor.DARK_RED,
                     "%s");
         }
@@ -42,7 +42,7 @@ public enum ItemPermission {
         @Override
         public String getErrorMessage() {
             return String.format("%s%s%sは人狼以外が使えます",
-                    PluginMain.getLogo(ChatColor.RED),
+                    JinroRPG.getLogo(ChatColor.RED),
                     ChatColor.DARK_RED,
                     "%s");
         }
@@ -56,7 +56,7 @@ public enum ItemPermission {
         @Override
         public String getErrorMessage() {
             return String.format("%s%s%sは共犯者のみが使えます",
-                    PluginMain.getLogo(ChatColor.RED),
+                    JinroRPG.getLogo(ChatColor.RED),
                     ChatColor.DARK_RED,
                     "%s");
         }

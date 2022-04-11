@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.config;
 
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -15,17 +15,17 @@ public class CustomConfig {
     protected FileConfiguration config = null;
     protected final File configFile;
     protected final String file;
-    protected final PluginMain plugin;
+    protected final JinroRPG plugin;
 
-    public CustomConfig(PluginMain plugin) {
+    public CustomConfig(JinroRPG plugin) {
         this(plugin, "config");
     }
 
-    public CustomConfig(PluginMain plugin, String fileName) {
+    public CustomConfig(JinroRPG plugin, String fileName) {
         this(plugin,null,fileName);
     }
 
-    public CustomConfig(PluginMain plugin, String path, String file) {
+    public CustomConfig(JinroRPG plugin, String path, String file) {
         this.plugin = plugin;
         if (path != null) this.file = path + "/" + file + ".yml";
         else this.file = file + ".yml";

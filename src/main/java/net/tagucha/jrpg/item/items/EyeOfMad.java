@@ -1,20 +1,22 @@
 package net.tagucha.jrpg.item.items;
 
+import net.tagucha.jrpg.event.GameUseEyeOfMadEvent;
 import net.tagucha.jrpg.job.GameJob;
 import net.tagucha.jrpg.item.GameItem;
 import net.tagucha.jrpg.item.ItemPermission;
 import net.tagucha.jrpg.item.TimePermission;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import net.tagucha.jrpg.core.JinroGame;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 
 import java.util.*;
 
 public class EyeOfMad extends GameItem {
-    public EyeOfMad(PluginMain plugin) {
+    public EyeOfMad(JinroRPG plugin) {
         super(
                 plugin,
                 Material.END_CRYSTAL,
@@ -37,13 +39,14 @@ public class EyeOfMad extends GameItem {
         Random random = new Random();
         for (int i = 0;i < event.getItemDrop().getItemStack().getAmount();i++) {
             UUID uuid = list.get(random.nextInt(list.size()));
-            player.sendMessage(String.format("%s%s%s : %s%s",
-                    PluginMain.getLogo(ChatColor.RED),
+            player.sendMessage(String.format("%s %s%s : %s",
+                    JinroRPG.getLogo(ChatColor.RED),
                     GameJob.WEREWOLF.getRealName(),
                     ChatColor.WHITE,
-                    ChatColor.DARK_RED,
                     this.plugin.getName(uuid))
             );
+            GameUseEyeOfMadEvent evt = new GameUseEyeOfMadEvent(game, player, uuid);
+            Bukkit.getPluginManager().callEvent(evt);
         }
         event.getItemDrop().remove();
     }

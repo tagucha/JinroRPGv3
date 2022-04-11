@@ -4,7 +4,7 @@ import net.tagucha.jrpg.item.items.*;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 
 import java.util.*;
 
@@ -15,6 +15,7 @@ public class GameItems {
 
     public final ItemStack BLUNT;
     public final ItemStack TELESCOPE;
+    public final ItemStack MEMO;
 
     public final ItemStack NORMAL_BOW;
     public final ItemStack NORMAL_ARROW;
@@ -36,14 +37,15 @@ public class GameItems {
     public final ItemStack ASH_OF_MEDIUM;
 
 
-    private final PluginMain plugin;
+    private final JinroRPG plugin;
 
-    public GameItems(PluginMain plugin) {
+    public GameItems(JinroRPG plugin) {
         this.plugin = plugin;
         for (GameItem.ItemType type : GameItem.ItemType.values()) this.merchant_recipes.put(type, new HashMap<>());
 
         this.BLUNT = this.register(new Blunt(this.plugin), 0);
         this.TELESCOPE = this.register(new Telescope(this.plugin), 0);
+        this.MEMO = this.register(new JinroMemo(this.plugin), 0);
 
         this.NORMAL_BOW = this.register(new NormalBow(this.plugin),2);
         this.NORMAL_ARROW = this.register(new NormalArrow(this.plugin),2);
@@ -74,8 +76,8 @@ public class GameItems {
             recipe.setIngredients(Collections.singletonList(new ItemStack(Material.EMERALD, emerald)));
             recipe.setExperienceReward(false);
             this.merchant_recipes.get(item.getConfigKey().type()).put(item.getConfigKey().key(), recipe);
-            this.items.add(item);
         }
+        this.items.add(item);
         this.match.put(item, stack);
         return stack;
     }

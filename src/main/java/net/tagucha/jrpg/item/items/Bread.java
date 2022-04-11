@@ -1,7 +1,6 @@
 package net.tagucha.jrpg.item.items;
 
-import net.tagucha.jrpg.PluginMain;
-import net.tagucha.jrpg.util.ItemUtil;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.item.GameItem;
 import net.tagucha.jrpg.item.ItemPermission;
 import net.tagucha.jrpg.item.TimePermission;
@@ -23,7 +22,7 @@ public class Bread extends GameItem {
             "メロンパン", "ブリパッシュ", "ブレッチェン", "カイザーゼンメル"
     };
 
-    public Bread(PluginMain plugin) {
+    public Bread(JinroRPG plugin) {
         super(
                 plugin,
                 Material.BREAD,

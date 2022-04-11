@@ -1,7 +1,7 @@
 package net.tagucha.jrpg.item.items;
 
 import net.tagucha.jrpg.core.JinroGame;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.event.PlayerAttackEvent;
 import net.tagucha.jrpg.item.GameItem;
 import net.tagucha.jrpg.item.ItemPermission;
@@ -30,7 +30,7 @@ import java.util.function.Consumer;
 public class TridentOfRancor extends GameItem {
     private static final Set<UUID> flying_tridents = new HashSet<>();
 
-    public TridentOfRancor(PluginMain plugin) {
+    public TridentOfRancor(JinroRPG plugin) {
         super(
                 plugin,
                 Material.TRIDENT,

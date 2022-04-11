@@ -2,7 +2,7 @@ package net.tagucha.jrpg.item;
 
 import org.bukkit.ChatColor;
 import net.tagucha.jrpg.core.GameTimer;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 
 public enum TimePermission {
     ANYTIME(){
@@ -14,7 +14,7 @@ public enum TimePermission {
         @Override
         public String getErrorMessage() {
             return String.format("%s%s%sはいつでも使えます",
-                    PluginMain.getLogo(ChatColor.RED),
+                    JinroRPG.getLogo(ChatColor.RED),
                     ChatColor.DARK_RED,
                     "%s"
             );
@@ -29,7 +29,7 @@ public enum TimePermission {
         @Override
         public String getErrorMessage() {
             return String.format("%s%s%sは昼間のみ使えます",
-                    PluginMain.getLogo(ChatColor.RED),
+                    JinroRPG.getLogo(ChatColor.RED),
                     ChatColor.DARK_RED,
                     "%s"
             );
@@ -44,7 +44,7 @@ public enum TimePermission {
         @Override
         public String getErrorMessage() {
             return String.format("%s%s%sは夜にのみ使えます",
-                    PluginMain.getLogo(ChatColor.RED),
+                    JinroRPG.getLogo(ChatColor.RED),
                     ChatColor.DARK_RED,
                     "%s"
             );

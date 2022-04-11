@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.item.items;
 
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.item.GameItem;
 import net.tagucha.jrpg.item.ItemPermission;
 import net.tagucha.jrpg.item.TimePermission;
@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 public class SpeedPotion extends GameItem {
-    public SpeedPotion(PluginMain plugin) {
+    public SpeedPotion(JinroRPG plugin) {
         super(
                 plugin,
                 Material.POTION,

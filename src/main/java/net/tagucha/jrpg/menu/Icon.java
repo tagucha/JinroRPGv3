@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -55,7 +56,14 @@ public abstract class Icon {
         return new Icon(new ItemStack(material, amount)) {
             @Override
             public void onClick(Player player) {
+            }
+        };
+    }
 
+    public static Icon createDummyIcon(Material material, String name, int amount) {
+        return new Icon(material, name, new ArrayList<>(), amount) {
+            @Override
+            public void onClick(Player player) {
             }
         };
     }

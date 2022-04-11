@@ -1,7 +1,7 @@
 package net.tagucha.jrpg.item.items;
 
 import net.tagucha.jrpg.core.JinroGame;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.item.GameItem;
 import net.tagucha.jrpg.item.ItemPermission;
 import net.tagucha.jrpg.item.TimePermission;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.UUID;
 
 public class ProvidenceOfKnight extends GameItem {
-    public ProvidenceOfKnight(PluginMain plugin) {
+    public ProvidenceOfKnight(JinroRPG plugin) {
         super(plugin,
                 Material.GOLDEN_HORSE_ARMOR,
                 ChatColor.WHITE + "騎士の加護",
@@ -36,13 +36,13 @@ public class ProvidenceOfKnight extends GameItem {
     @Override
     protected void onClickSign(JinroGame game, PlayerInteractEvent event, Player clicker, UUID target) {
         if (clicker.getUniqueId().equals(target)) {
-            clicker.sendMessage(PluginMain.getLogo(ChatColor.RED) + " 自分には使用できません");
+            clicker.sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 自分には使用できません");
         } else {
             this.plugin.getPlayer(target).ifPresent(player -> {
                 if (game.pray(target)) {
-                    clicker.sendMessage(String.format("%s %s に 騎士の加護 を使用しました", PluginMain.getLogo(ChatColor.RED), player.getName()));
+                    clicker.sendMessage(String.format("%s %s に 騎士の加護 を使用しました", JinroRPG.getLogo(ChatColor.RED), player.getName()));
                     clicker.getInventory().setItemInMainHand(null);
-                } else event.getPlayer().sendMessage(PluginMain.getLogo(ChatColor.RED) + " 既に使用されています");
+                } else event.getPlayer().sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 既に使用されています");
             });
         }
         event.setCancelled(true);

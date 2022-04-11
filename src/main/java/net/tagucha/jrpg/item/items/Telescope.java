@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.item.items;
 
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.core.JinroGame;
 import net.tagucha.jrpg.item.GameItem;
 import net.tagucha.jrpg.item.ItemPermission;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.UUID;
 
 public class Telescope extends GameItem{
-    public Telescope(PluginMain plugin) {
+    public Telescope(JinroRPG plugin) {
         super(plugin,
                 Material.SPYGLASS,
                 ChatColor.WHITE + "望遠鏡",
@@ -34,14 +34,14 @@ public class Telescope extends GameItem{
     @Override
     protected void onClickSign(JinroGame game, PlayerInteractEvent event, Player clicker, UUID target) {
         if (game.getJob(clicker.getUniqueId()).filter(job -> job.equals(GameJob.CORONER)).isEmpty()) {
-            clicker.sendMessage(PluginMain.getLogo(ChatColor.RED) + " 検死は検死官のみが行えます");
+            clicker.sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 検死は検死官のみが行えます");
             return;
         }
         if (!this.plugin.JOB_MANAGER.isKilledByCorner(target)) {
-            clicker.sendMessage(PluginMain.getLogo(ChatColor.RED) + " 検死官が止め刺した相手のみ検死を行えます");
+            clicker.sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 検死官が止め刺した相手のみ検死を行えます");
             return;
         }
-        game.getJob(target).ifPresent(job -> clicker.sendMessage(String.format("%s %s%s", PluginMain.getLogo(ChatColor.RED), plugin.getName(target), job.isHuman ? "は人間でした" : "は人間ではありませんでした")));
+        game.getJob(target).ifPresent(job -> clicker.sendMessage(String.format("%s %s%s", JinroRPG.getLogo(ChatColor.RED), plugin.getName(target), job.isHuman ? "は人間でした" : "は人間ではありませんでした")));
         event.setCancelled(true);
     }
 }

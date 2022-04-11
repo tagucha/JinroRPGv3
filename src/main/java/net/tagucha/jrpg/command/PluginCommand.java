@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.command;
 
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.exception.GameException;
 import net.tagucha.jrpg.exception.PermissionException;
 import org.bukkit.command.Command;
@@ -12,10 +12,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class PluginCommand implements TabExecutor, Listener {
-    protected final PluginMain plugin;
+    protected final JinroRPG plugin;
     protected final String command;
 
-    public PluginCommand(PluginMain plugin, String command) {
+    public PluginCommand(JinroRPG plugin, String command) {
         this.plugin = plugin;
         this.command = command;
     }
@@ -23,7 +23,7 @@ public class PluginCommand implements TabExecutor, Listener {
     public void register() {
         org.bukkit.command.PluginCommand cmd = this.plugin.getCommand(this.command);
         if (cmd == null) {
-            System.out.printf("[%s] I cannot load the command of %s.n", this.plugin.getName(), this.command);
+            this.plugin.getLogger().info("Cannot load the command, " + this.command + ".");
         } else {
             cmd.setExecutor(this);
             cmd.setTabCompleter(this);

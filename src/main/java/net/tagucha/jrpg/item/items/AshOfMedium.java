@@ -1,24 +1,19 @@
 package net.tagucha.jrpg.item.items;
 
 import net.tagucha.jrpg.core.JinroGame;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.item.GameItem;
 import net.tagucha.jrpg.item.ItemPermission;
 import net.tagucha.jrpg.item.TimePermission;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 public class AshOfMedium extends GameItem {
-    public AshOfMedium(PluginMain plugin) {
+    public AshOfMedium(JinroRPG plugin) {
         super(
                 plugin,
                 Material.GUNPOWDER,
@@ -37,8 +32,8 @@ public class AshOfMedium extends GameItem {
 
     @Override
     protected void onDrop(JinroGame game, PlayerDropItemEvent event) {
-        event.getPlayer().sendMessage(String.format("%s 死亡者 %d名", PluginMain.getLogo(ChatColor.RED), game.getDead().size()));
-        for (UUID uuid:game.getDead()) event.getPlayer().sendMessage(String.format("%s %s%s", PluginMain.getLogo(ChatColor.RED), ChatColor.AQUA, this.plugin.getName(uuid)));
+        event.getPlayer().sendMessage(String.format("%s 死亡者 %d名", JinroRPG.getLogo(ChatColor.RED), game.getDead().size()));
+        for (UUID uuid:game.getDead()) event.getPlayer().sendMessage(String.format("%s %s%s", JinroRPG.getLogo(ChatColor.RED), ChatColor.AQUA, this.plugin.getName(uuid)));
         event.getItemDrop().remove();
     }
 }

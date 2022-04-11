@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 public enum GameJob {
     VILLAGER("村人", "村人", ChatColor.GREEN, ChatColor.GREEN,' ',0,-1, true),
     WEREWOLF("人狼", "人狼", ChatColor.DARK_RED, ChatColor.DARK_RED,'w',1,0, false),
-    MAD("共犯者", VILLAGER.fortune_name, ChatColor.GRAY, VILLAGER.fortune,'m',-1,2, true),
+    MAD("共犯者", VILLAGER.fortune_name, ChatColor.GRAY, VILLAGER.fortune,'m',-1,1, true),
     LYCANTHROPY("狼憑き", VILLAGER.display_name, WEREWOLF.fortune_name, ChatColor.DARK_PURPLE, VILLAGER.display, WEREWOLF.fortune, 'l',0,2, false),
     VAMPIRE("吸血鬼", "吸血鬼", ChatColor.RED, ChatColor.RED,'v',2,3, false),
     BAKER("パン屋", VILLAGER.fortune_name, ChatColor.WHITE, VILLAGER.fortune,'b',0,4, true),

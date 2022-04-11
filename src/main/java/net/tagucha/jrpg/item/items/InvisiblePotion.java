@@ -10,12 +10,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 
 import java.util.function.Consumer;
 
 public class InvisiblePotion extends GameItem {
-    public InvisiblePotion(PluginMain plugin) {
+    public InvisiblePotion(JinroRPG plugin) {
         super(
                 plugin,
                 Material.POTION,

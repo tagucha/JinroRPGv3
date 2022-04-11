@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.item.items;
 
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.event.HitStunGrenadeEvent;
 import net.tagucha.jrpg.item.GameItem;
 import net.tagucha.jrpg.item.ItemPermission;
@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class StunGrenade extends GameItem {
-    public StunGrenade(PluginMain plugin) {
+    public StunGrenade(JinroRPG plugin) {
         super(
                 plugin,
                 Material.SNOWBALL,

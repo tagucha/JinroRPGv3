@@ -9,12 +9,12 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import net.tagucha.jrpg.core.JinroGame;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 
 import java.util.Arrays;
 
 public class EyeOfProvidence extends GameItem {
-    public EyeOfProvidence(PluginMain plugin) {
+    public EyeOfProvidence(JinroRPG plugin) {
         super(
                 plugin,
                 Material.SUNFLOWER,

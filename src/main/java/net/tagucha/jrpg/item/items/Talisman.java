@@ -7,12 +7,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import net.tagucha.jrpg.core.JinroGame;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 
 import java.util.Arrays;
 
 public class Talisman extends GameItem {
-    public Talisman(PluginMain plugin) {
+    public Talisman(JinroRPG plugin) {
         super(
                 plugin,
                 Material.PAPER,

@@ -1,6 +1,6 @@
 package net.tagucha.jrpg.core;
 
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.event.GameTickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,7 +14,7 @@ import net.tagucha.jrpg.event.GameChangeToNightEvent;
 public class GameTimer {
     public final int max_time_night;
     public final int max_time_day;
-    private final PluginMain plugin;
+    private final JinroRPG plugin;
     private final JinroGame game;
     private final BossBar time_bar;
     private long total_time = 0;
@@ -32,7 +32,7 @@ public class GameTimer {
     private static final BarColor DAY_COLOR = BarColor.YELLOW;
     private static final BarColor NIGHT_COLOR = BarColor.PURPLE;
 
-    public GameTimer(PluginMain plugin,JinroGame game) {
+    public GameTimer(JinroRPG plugin, JinroGame game) {
         this.plugin = plugin;
         this.game = game;
         this.max_time_night = plugin.getGameConfig().getTimeNight();

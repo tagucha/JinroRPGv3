@@ -1,25 +1,30 @@
 package net.tagucha.jrpg.core;
 
-import net.tagucha.jrpg.PluginMain;
+import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.config.GameAreaConfig;
-import net.tagucha.jrpg.event.*;
+import net.tagucha.jrpg.event.GameEndEvent;
+import net.tagucha.jrpg.event.GameStartEvent;
 import net.tagucha.jrpg.exception.GameException;
 import net.tagucha.jrpg.exception.PopulationOverException;
 import net.tagucha.jrpg.job.GameJob;
-import net.tagucha.jrpg.packet.UndarkCore;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Team;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class JinroGame {
-    private final PluginMain plugin;
+    private final JinroRPG plugin;
     private final World world;
 
     public final GameTimer timer;
@@ -46,14 +51,14 @@ public class JinroGame {
     private final HashSet<UUID> axe_used = new HashSet<>();
     private final HashSet<UUID> cursed = new HashSet<>();
 
-    public JinroGame(PluginMain plugin, World world) throws GameException{
+    public JinroGame(JinroRPG plugin, World world) throws GameException{
         this.plugin = plugin;
         this.world = world;
         this.area = new GameAreaConfig(plugin,this,world);
         this.timer = new GameTimer(plugin,this);
     }
 
-    public PluginMain getPlugin() {
+    public JinroRPG getPlugin() {
         return plugin;
     }
 
@@ -130,23 +135,31 @@ public class JinroGame {
         return cursed;
     }
 
+    public GameAreaConfig getArea() {
+        return area;
+    }
+
     public void start(HashSet<UUID> players, Map<UUID,GameJob> wish, HashSet<UUID> spectators) {
         this.plugin.getGameConfig().reload();
         this.plugin.registerJinroGame(this);
         this.players.addAll(players);
         this.alive.addAll(players);
         this.spectators.addAll(spectators);
+        Team temp = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("jinro");
+        if (temp == null) temp = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("jinro");
+        final Team team = temp;
+        team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
         try {
             this.giveJobs(wish);
             this.timer.start();
-            this.noticeMessage(String.format("%s役職配分:", PluginMain.getLogo(ChatColor.GOLD)));
+            this.noticeMessage(String.format("%s 役職配分:", JinroRPG.getLogo(ChatColor.GOLD)));
             this.noticeMessage(Arrays.stream(GameJob.values())
                     .filter(job -> this.workers.get(job).size() > 0)
                     .map(job -> String.format("%s%s: %d人", job.getDisplayName(), ChatColor.WHITE, this.workers.get(job).size()))
                     .collect(Collectors.joining(", ")));
             for (UUID uuid:this.players) {
                 this.sendMessage(uuid, String.format("%s %sあなたの役職は%s%sです",
-                                PluginMain.getLogo(ChatColor.GOLD),
+                                JinroRPG.getLogo(ChatColor.GOLD),
                                 ChatColor.WHITE,
                                 this.jobs.get(uuid).getDisplayName(),
                                 ChatColor.WHITE
@@ -154,20 +167,26 @@ public class JinroGame {
                 );
                 this.plugin.getPlayer(uuid).ifPresent(player -> {
                     this.message_queue.put(uuid, new ArrayDeque<>());
+                    team.addPlayer(player);
                     player.getInventory().clear();
                     player.getInventory().addItem();
-                    player.getInventory().addItem(this.plugin.ITEMS.BLUNT, this.plugin.ITEMS.COOKED_BEEF, this.plugin.ITEMS.TELESCOPE);
+                    player.getInventory().addItem(this.plugin.ITEMS.BLUNT, this.plugin.ITEMS.COOKED_BEEF, this.plugin.ITEMS.TELESCOPE, this.plugin.ITEMS.MEMO);
                     player.setFoodLevel(20);
                     player.setMaxHealth(40);
                     player.setHealth(40);
                     player.setExhaustion(0);
                     player.setSaturation(40);
                     player.setGameMode(GameMode.ADVENTURE);
-                    player.setFlying(false);
+                    player.setAllowFlight(false);
+                    this.getArea().getSpawnPoint().ifPresent(player::teleport);
                     Arrays.stream(PotionEffectType.values()).filter(player::hasPotionEffect).forEach(player::removePotionEffect);
+                    for (Player other:players.stream().map(plugin::getPlayer).filter(Optional::isPresent).map(Optional::get).toList()) {
+                        if (player.equals(other)) continue;
+                        ((CraftPlayer) player).getHandle().b.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, ((CraftPlayer)other).getHandle()));
+                    }
+
                 });
             }
-            this.players.forEach(UndarkCore::addPlayer);
             for (UUID uuid:this.spectators) {
                 this.plugin.getPlayer(uuid).ifPresent(player -> {
                     player.setGameMode(GameMode.SPECTATOR);
@@ -176,13 +195,18 @@ public class JinroGame {
             this.isStarted = true;
             Bukkit.getPluginManager().callEvent(new GameStartEvent(this));
         } catch (GameException e) {
-            this.plugin.noticeMessage(String.format("%s%s人数が足りないためゲームを開始できませんでした。", PluginMain.getLogo(ChatColor.GOLD), ChatColor.RED));
+            this.plugin.noticeMessage(String.format("%s %s人数が足りないためゲームを開始できませんでした。", JinroRPG.getLogo(ChatColor.GOLD), ChatColor.RED));
+            Bukkit.getPluginManager().callEvent(new GameEndEvent(this));
             this.plugin.unregisterJinroGame();
         }
     }
 
     public void finish(GameJob job, int code) {
         Bukkit.getPluginManager().callEvent(new GameEndEvent(this));
+        try {
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("jinro").unregister();
+        } catch (NullPointerException ignored) {
+        }
         this.timer.stop();
         this.skeletons.forEach(skeleton -> {
             if (skeleton != null) skeleton.remove();
@@ -216,10 +240,15 @@ public class JinroGame {
             this.getAlive().remove(uuid);
             this.getDead().add(uuid);
             if (!this.plugin.isOnline(uuid)) {
-                this.sendMessage(uuid,String.format("%s あなたは復活時間制限により死亡しました",PluginMain.getLogo(ChatColor.RED)));
+                this.sendMessage(uuid,String.format("%s あなたは復活時間制限により死亡しました", JinroRPG.getLogo(ChatColor.RED)));
             }
             this.checkGameCondition();
         }
+    }
+
+    public void addSpectator(UUID uuid) {
+        this.spectators.add(uuid);
+        this.plugin.getPlayer(uuid).ifPresent(player -> player.setGameMode(GameMode.SPECTATOR));
     }
 
     public void checkGameCondition() {
@@ -244,7 +273,10 @@ public class JinroGame {
     public void showResult(Player player, GameJob job) {
         List<String> args = new ArrayList<>();
         args.add(ChatColor.DARK_GREEN +"=============" + (job == null ? "=LIST=":"今回の役職") + "=============");
-
+        if (job != null) {
+            args.add("勝者: " + job.getRealName());
+            args.add(" ");
+        }
         Arrays.stream(GameJob.values()).filter(j -> !this.workers.get(j).isEmpty()).forEach(j -> {
             args.add(j.getRealName() + ChatColor.RESET + ":");
             args.add(
@@ -253,8 +285,9 @@ public class JinroGame {
                             job == null && this.isDead(uuid) ? ChatColor.GRAY : ChatColor.WHITE,
                             this.plugin.getName(uuid)
                     )).collect(Collectors.joining(ChatColor.WHITE + ",")));
+            args.add(" ");
         });
-
+        args.remove(args.size() - 1);
         args.add(ChatColor.DARK_GREEN + "================================");
         for (String str:args) player.sendMessage(str);
     }
@@ -271,6 +304,11 @@ public class JinroGame {
     public void noticeMessage(String arg) {
         this.getPlayers().forEach(uuid -> sendMessage(uuid, arg));
         this.getSpectators().forEach(uuid -> sendMessage(uuid, arg));
+    }
+
+    public void noticeMessageAsTitle(String title, String sub) {
+        this.getPlayers().forEach(uuid -> plugin.getPlayer(uuid).ifPresent(player -> player.sendTitle(title, sub)));
+        this.getSpectators().forEach(uuid -> plugin.getPlayer(uuid).ifPresent(player -> player.sendTitle(title, sub)));
     }
 
     public void killSkeleton(Skeleton skeleton) {
@@ -293,7 +331,7 @@ public class JinroGame {
             case 10, 11 -> new int[]{2, 1, 0, 1, 0, 0, 0, 0, 0};
             case 12, 13, 14 -> new int[]{3, 1, 0, 1, 0, 0, 0, 0, 0};
             case 15, 16 -> new int[]{3, 1, 0, 1, 0, 0, 1, 1, 0};
-            default -> null;
+            default -> new int[]{4, 1, 0, 1, 0, 0, 1, 1, 0};
         };
     }
 
@@ -351,24 +389,18 @@ public class JinroGame {
     }
 
     public boolean useInvincible(UUID uuid) {
-        if (this.jobs.get(uuid) == GameJob.VAMPIRE) return true;
         if (!this.prayers.contains(uuid)) return false;
         this.prayers.remove(uuid);
         return true;
     }
 
-    public boolean isInvincible(UUID uuid) {
-        if (this.jobs.get(uuid) == GameJob.VAMPIRE) return true;
-        return this.prayers.contains(uuid);
-    }
-
     public boolean useTalisman(UUID uuid) {
         if (this.talisman.contains(uuid)) {
-            this.sendMessage(uuid, PluginMain.getLogo(ChatColor.RED) + "既に使用しています");
+            this.sendMessage(uuid, JinroRPG.getLogo(ChatColor.RED) + "既に使用しています");
             return false;
         }
         this.talisman.add(uuid);
-        this.sendMessage(uuid, String.format("%s %s を使用しました",PluginMain.getLogo(ChatColor.RED),"天啓の呪符"));
+        this.sendMessage(uuid, String.format("%s %s を使用しました", JinroRPG.getLogo(ChatColor.RED), "天啓の呪符"));
         return true;
     }
 
@@ -391,7 +423,7 @@ public class JinroGame {
                                     });
                                     //占い可能回数の表示処理
                                     if (heart.getOrDefault(player.getUniqueId(), 0) != begin) {
-                                        player.sendMessage(PluginMain.getLogo(ChatColor.RED) + " 残りの占い可能回数: " + heart.getOrDefault(player.getUniqueId(), 0) + "回");
+                                        player.sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 残りの占い可能回数: " + heart.getOrDefault(player.getUniqueId(), 0) + "回");
                                     }
                                 }
                         ));

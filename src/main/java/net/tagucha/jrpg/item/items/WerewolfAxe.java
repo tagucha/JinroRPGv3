@@ -2,7 +2,7 @@ package net.tagucha.jrpg.item.items;
 
 import net.tagucha.jrpg.core.GameTimer;
 import net.tagucha.jrpg.core.JinroGame;
-import net.tagucha.jrpg.PluginMain;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.event.PlayerAttackEvent;
 import net.tagucha.jrpg.item.GameItem;
 import net.tagucha.jrpg.item.ItemPermission;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 public class WerewolfAxe extends GameItem {
-    public WerewolfAxe(PluginMain plugin) {
+    public WerewolfAxe(JinroRPG plugin) {
         super(
                 plugin,
                 Material.STONE_AXE,
@@ -44,7 +44,7 @@ public class WerewolfAxe extends GameItem {
     @Override
     protected void onAttack(JinroGame game, PlayerAttackEvent event) {
         if (game.timer.getClock() == GameTimer.Clock.DAY && game.getAxeUsed().contains(event.getAttacker().getUniqueId())) {
-            event.getAttacker().sendMessage(PluginMain.getLogo(ChatColor.RED) + " 昼のあいだは一度しか使えません");
+            event.getAttacker().sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 昼のあいだは一度しか使えません");
             event.setCancelled(true);
             return;
         }
