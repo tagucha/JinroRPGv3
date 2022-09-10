@@ -7,10 +7,14 @@ import net.tagucha.jrpg.event.GameEndEvent;
 import net.tagucha.jrpg.event.GamePlayerKillPlayerEvent;
 import net.tagucha.jrpg.item.items.Bread;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -61,5 +65,16 @@ public class JobManager implements Listener {
         if (event.getEntity().removeScoreboardTag("sacred_cross")) return;
         if (this.plugin.isPlayer(event.getEntity().getUniqueId()).filter(game -> game.getJob(event.getEntity().getUniqueId()).filter(job -> job == GameJob.VAMPIRE).isPresent() && game.timer.isNight()).isPresent())
             event.setDamage(0);
+    }
+
+    @EventHandler
+    public void onShot(EntityShootBowEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            this.plugin.getJinroGame().ifPresent(game -> {
+                if (game.getJob(player.getUniqueId()).filter(job -> job.equals(GameJob.HUNTER)).isPresent()) {
+                    player.getInventory().addItem(new ItemStack(Material.EMERALD));
+                }
+            });
+        }
     }
 }
