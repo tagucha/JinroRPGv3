@@ -9,7 +9,7 @@
 バージョンはSpigot-1.18.1です。1.18.1以外のバージョンだと不具合が発生することが多々ございます。
 
 ## リリース
-最新のリリースは [1.5.1-SNAPSHOT](https://github.com/tagucha/JinroRPGv3/releases/tag/1.5.1-SNAPSHOT) です
+最新のリリースは [1.5.2-SNAPSHOT](https://github.com/tagucha/JinroRPGv3/releases/tag/1.5.2-SNAPSHOT) です
 
 ## 問い合わせ
 バグの報告や要望等は [Googleフォーム](https://forms.gle/asdnay967M86htPS6) にて受け付けています。
