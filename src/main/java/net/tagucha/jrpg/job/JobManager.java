@@ -39,14 +39,14 @@ public class JobManager implements Listener {
     public void onChangeToNight(GameChangeToNightEvent event) {
         event.getGame().getWorkers(GameJob.SMART_WEREWOLF).stream().filter(event.getGame()::isAlive).forEach(uuid -> {
             event.getGame().getHeart().put(uuid, event.getGame().getHeart().getOrDefault(uuid, 0) + 1);
-            event.getGame().sendMessage(uuid, JinroRPG.getLogo(ChatColor.RED) + " 残りの占い可能回数: " + event.getGame().getHeart().getOrDefault(uuid, 0) + "回");
+            event.getGame().sendMessage(uuid, JinroRPG.getChatLogo(ChatColor.RED) + " 残りの占い可能回数: " + event.getGame().getHeart().getOrDefault(uuid, 0) + "回");
         });
     }
 
     @EventHandler
     public void onKill(GamePlayerKillPlayerEvent event) {
         if (event.getGame().getJob(event.getKiller()).filter(job -> job.equals(GameJob.CORONER)).isPresent()) {
-            event.getGame().sendMessage(event.getKiller(), String.format("%s %s%s", JinroRPG.getLogo(ChatColor.RED), plugin.getName(event.getTarget()), event.getGame().getJob(event.getTarget()).get().isHuman ? "は人間でした" : "は人間ではありませんでした"));
+            event.getGame().sendMessage(event.getKiller(), String.format("%s %s%s", JinroRPG.getChatLogo(ChatColor.RED), plugin.getName(event.getTarget()), event.getGame().getJob(event.getTarget()).get().isHuman ? "は人間でした" : "は人間ではありませんでした"));
             coroner_killing.add(event.getTarget());
         }
     }

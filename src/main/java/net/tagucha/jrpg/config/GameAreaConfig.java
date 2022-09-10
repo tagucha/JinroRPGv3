@@ -9,7 +9,9 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
+import org.bukkit.util.Consumer;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -87,7 +89,7 @@ public class GameAreaConfig {
         this.number = check().a();
     }
 
-    public double getDouble(String key) throws GameAreaInputException{
+    public double getDouble(String key) throws GameAreaInputException {
         if (!config.contains(key)) throw new GameAreaInputException(this.game,String.format("エリア設定ファイル(%s)の中に%sがありません",this.config.getName(),key));
         String arg = config.getString(key, "null");
         try {
@@ -109,6 +111,12 @@ public class GameAreaConfig {
 
     public Optional<Location> getSpawnPoint() {
         return Optional.ofNullable(this.spawn);
+    }
+
+    public boolean dealSpawnPoint(Consumer<Location> consumer) {
+        if (this.spawn == null) return false;
+        consumer.accept(this.spawn);
+        return true;
     }
 
     public enum Shape {

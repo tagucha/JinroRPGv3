@@ -32,8 +32,8 @@ public class AshOfMedium extends GameItem {
 
     @Override
     protected void onDrop(JinroGame game, PlayerDropItemEvent event) {
-        event.getPlayer().sendMessage(String.format("%s 死亡者 %d名", JinroRPG.getLogo(ChatColor.RED), game.getDead().size()));
-        for (UUID uuid:game.getDead()) event.getPlayer().sendMessage(String.format("%s %s%s", JinroRPG.getLogo(ChatColor.RED), ChatColor.AQUA, this.plugin.getName(uuid)));
+        event.getPlayer().sendMessage(String.format("%s 死亡者 %d名", JinroRPG.getChatLogo(ChatColor.RED), game.getDead().size()));
+        for (UUID uuid:game.getDead()) event.getPlayer().sendMessage(String.format("%s %s%s", JinroRPG.getChatLogo(ChatColor.RED), ChatColor.AQUA, this.plugin.getName(uuid)));
         event.getItemDrop().remove();
     }
 }

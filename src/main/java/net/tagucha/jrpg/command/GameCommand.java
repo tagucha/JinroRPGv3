@@ -1,9 +1,8 @@
 package net.tagucha.jrpg.command;
 
-import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
+import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.core.GameManager;
 import net.tagucha.jrpg.core.GamePreparation;
-import net.tagucha.jrpg.JinroRPG;
 import net.tagucha.jrpg.event.GameEndEvent;
 import net.tagucha.jrpg.exception.GameException;
 import net.tagucha.jrpg.exception.SimpleMessageException;
@@ -15,14 +14,15 @@ import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class GameCommand extends PluginCommand {
     private GamePreparation preparation = null;
@@ -46,27 +46,26 @@ public class GameCommand extends PluginCommand {
                 case 1:
                     if (args[0].equalsIgnoreCase("start")) {
                         if (!isPlayer) {
-                            sender.sendMessage(String.format("%s%s", JinroRPG.getLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
+                            sender.sendMessage(String.format("%s%s", JinroRPG.getChatLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
                             break;
                         }
                         this.checkPermission(sender,"jinro.command.start");
                         this.createGamePreparation(((Player) sender).getWorld(), 100).start();
                     } else if (args[0].equalsIgnoreCase("join")) {
                         if (!isPlayer) {
-                            sender.sendMessage(String.format("%s%s", JinroRPG.getLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
+                            sender.sendMessage(String.format("%s%s", JinroRPG.getChatLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
                             break;
                         }
                         this.getPreparation().ifPresent(prep -> {
                             if (!prep.getGame().isStarted()) {
                                 prep.addPlayer((Player) sender);
-                            } else {
                             }
                         });
                     } else if (args[0].equalsIgnoreCase("cancel")) {
                         this.checkPermission(sender, "jinro.command.cancel");
-                        if (this.getPreparation().isEmpty()) sender.sendMessage(String.format("%s%s", JinroRPG.getLogo(ChatColor.RED), " ゲームは開始されていません。"));
+                        if (this.getPreparation().isEmpty()) sender.sendMessage(String.format("%s%s", JinroRPG.getChatLogo(ChatColor.RED), " ゲームは開始されていません。"));
                         else {
-                            this.plugin.noticeMessage(JinroRPG.getLogo(ChatColor.GOLD) + " ゲームはキャンセルされました。");
+                            this.plugin.noticeMessage(JinroRPG.getChatLogo(ChatColor.GOLD) + " ゲームはキャンセルされました。");
                             this.getPreparation().get().cancelGame();
                             this.preparation = null;
                         }
@@ -77,12 +76,15 @@ public class GameCommand extends PluginCommand {
                                 game.showResult(player, null);
                             }
                         });
+                    } else if (args[0].equalsIgnoreCase("reload")) {
+                        this.plugin.getGameConfig().reload();
+                        sender.sendMessage("設定ファイルを再読み込みしました。");
                     }
                     break;
                 case 2:
                     if (args[0].equalsIgnoreCase("start")) {
                         if (!isPlayer) {
-                            sender.sendMessage(String.format("%s%s", JinroRPG.getLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
+                            sender.sendMessage(String.format("%s%s", JinroRPG.getChatLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
                             break;
                         }
                         this.checkPermission(sender,"jinro.command.start");
@@ -94,7 +96,7 @@ public class GameCommand extends PluginCommand {
                         }
                     } else if (args[0].equalsIgnoreCase("spawn")) {
                         if (!isPlayer) {
-                            sender.sendMessage(String.format("%s%s", JinroRPG.getLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
+                            sender.sendMessage(String.format("%s%s", JinroRPG.getChatLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
                             break;
                         }
                         this.checkPermission(sender, "jinro.command.spawn");
@@ -103,28 +105,28 @@ public class GameCommand extends PluginCommand {
                         } else if (args[1].equalsIgnoreCase("support") || args[1].equalsIgnoreCase("補助")) {
                             this.plugin.MERCHANT.spawnSupportMerchant(((Player) sender).getLocation());
                         } else {
-                            sender.sendMessage(String.format("%s%s", JinroRPG.getLogo(ChatColor.RED), " 第2引数は[combat|support]のみです。"));
+                            sender.sendMessage(String.format("%s%s", JinroRPG.getChatLogo(ChatColor.RED), " 第2引数は[combat|support]のみです。"));
                             break;
                         }
                     } else if (args[0].equalsIgnoreCase("give")) {
                         if (!isPlayer) {
-                            sender.sendMessage(String.format("%s%s", JinroRPG.getLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
+                            sender.sendMessage(String.format("%s%s", JinroRPG.getChatLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
                             break;
                         }
                         this.checkPermission(sender, "jinro.command.give");
                         Optional<GameItem> opt = this.plugin.ITEMS.items.stream().filter(item -> item.getConfigKey().key().equalsIgnoreCase(args[1])).findAny();
                         if (opt.isPresent()) ((Player) sender).getInventory().addItem(this.plugin.ITEMS.getItem(opt.get()));
-                        else sender.sendMessage(String.format("%s%s", JinroRPG.getLogo(ChatColor.RED), " そのようなアイテムは存在しません。"));
+                        else sender.sendMessage(String.format("%s%s", JinroRPG.getChatLogo(ChatColor.RED), " そのようなアイテムは存在しません。"));
                     } else if (args[0].equalsIgnoreCase("sign")) {
                         if (!isPlayer) {
-                            sender.sendMessage(String.format("%s%s", JinroRPG.getLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
+                            sender.sendMessage(String.format("%s%s", JinroRPG.getChatLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
                             break;
                         }
                         this.checkPermission(sender, "jinro.command.sign");
                         try {
                             Material material = Material.getMaterial(args[1]);
                             if (!GameManager.isSign(material)){
-                                sender.sendMessage(String.format("%s%s", JinroRPG.getLogo(ChatColor.RED), " 素材は看板を指定してください。"));
+                                sender.sendMessage(String.format("%s%s", JinroRPG.getChatLogo(ChatColor.RED), " 素材は看板を指定してください。"));
                                 return true;
                             }
                             ItemStack item = new ItemStack(material);
@@ -137,21 +139,21 @@ public class GameCommand extends PluginCommand {
                             item.setItemMeta(meta);
                             ((Player) sender).getInventory().addItem(item);
                         } catch (NullPointerException e) {
-                            sender.sendMessage(String.format("%s%s", JinroRPG.getLogo(ChatColor.RED), " 素材は看板を指定してください。"));
+                            sender.sendMessage(String.format("%s%s", JinroRPG.getChatLogo(ChatColor.RED), " 素材は看板を指定してください。"));
                         }
                     }
                     break;
                 case 3:
                     if (args[0].equalsIgnoreCase("sign")) {
                         if (!isPlayer) {
-                            sender.sendMessage(String.format("%s%s", JinroRPG.getLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
+                            sender.sendMessage(String.format("%s%s", JinroRPG.getChatLogo(ChatColor.RED), " プレイヤーのみしか実行できません。"));
                             break;
                         }
                         this.checkPermission(sender, "jinro.command.sign");
                         try {
                             Material material = Material.getMaterial(args[1]);
                             if (!GameManager.isSign(material)){
-                                sender.sendMessage(String.format("%s%s", JinroRPG.getLogo(ChatColor.RED), " 素材は看板を指定してください。"));
+                                sender.sendMessage(String.format("%s%s", JinroRPG.getChatLogo(ChatColor.RED), " 素材は看板を指定してください。"));
                                 return true;
                             }
                             ItemStack item = new ItemStack(material);
@@ -164,7 +166,7 @@ public class GameCommand extends PluginCommand {
                             item.setItemMeta(meta);
                             ((Player) sender).getInventory().addItem(item);
                         } catch (NullPointerException e) {
-                            sender.sendMessage(String.format("%s%s", JinroRPG.getLogo(ChatColor.RED), " 素材は看板を指定してください。"));
+                            sender.sendMessage(String.format("%s%s", JinroRPG.getChatLogo(ChatColor.RED), " 素材は看板を指定してください。"));
                         }
                     }
                     break;

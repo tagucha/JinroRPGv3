@@ -152,7 +152,7 @@ public final class JinroRPG extends JavaPlugin implements Listener {
         return config;
     }
 
-    public static String getLogo(ChatColor color) {
+    public static String getChatLogo(ChatColor color) {
         return String.format("%s[人狼RPG]%s",color,ChatColor.RESET);
     }
 }

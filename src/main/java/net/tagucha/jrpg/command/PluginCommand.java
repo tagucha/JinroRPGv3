@@ -48,7 +48,7 @@ public class PluginCommand implements TabExecutor, Listener {
 
     public void checkAndPut(CommandSender sender, List<String> commands, String command, String cmd, String permission) {
         if (permission != null) if (!sender.hasPermission(permission)) return;
-        if (!command.contains(cmd)) return;;
+        if (!command.contains(cmd)) return;
         commands.add(command);
     }
 

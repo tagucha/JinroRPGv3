@@ -45,7 +45,7 @@ public class JinroMemo extends GameItem {
     private void addCOSet(UUID accuser, UUID target, String result) {
         this.plugin.getJinroGame().ifPresent(game -> {
             if (game.timer.isNight()) {
-                game.sendMessage(accuser, JinroRPG.getLogo(ChatColor.RED) + " COは昼間にしかできません。");
+                game.sendMessage(accuser, JinroRPG.getChatLogo(ChatColor.RED) + " COは昼間にしかできません。");
                 return;
             }
             COSet set = new COSet(game.timer.getTotalTime(), accuser, target, result);
@@ -54,7 +54,7 @@ public class JinroMemo extends GameItem {
             accuserToSet.get(accuser).add(set);
             targetToSet.get(accuser).add(set);
             coSets.add(set);
-            this.plugin.noticeMessage(JinroRPG.getLogo(ChatColor.AQUA) + " CO: " + set.toFullLore(plugin));
+            this.plugin.noticeMessage(JinroRPG.getChatLogo(ChatColor.AQUA) + " CO: " + set.toFullLore(plugin));
         });
     }
 

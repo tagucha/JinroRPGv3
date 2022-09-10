@@ -43,9 +43,9 @@ public class PrayOfKnight extends GameItem {
                     }
                 }.runTaskLater(this.plugin,1);
             }
-            event.getPlayer().sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 騎士の祈り を使用しました");
+            event.getPlayer().sendMessage(JinroRPG.getChatLogo(ChatColor.RED) + " 騎士の祈り を使用しました");
         } else {
-            event.getPlayer().sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 既に使用しています");
+            event.getPlayer().sendMessage(JinroRPG.getChatLogo(ChatColor.RED) + " 既に使用しています");
             event.setCancelled(true);
         }
     }

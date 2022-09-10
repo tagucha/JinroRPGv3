@@ -40,7 +40,7 @@ public class EyeOfMad extends GameItem {
         for (int i = 0;i < event.getItemDrop().getItemStack().getAmount();i++) {
             UUID uuid = list.get(random.nextInt(list.size()));
             player.sendMessage(String.format("%s %s%s : %s",
-                    JinroRPG.getLogo(ChatColor.RED),
+                    JinroRPG.getChatLogo(ChatColor.RED),
                     GameJob.WEREWOLF.getRealName(),
                     ChatColor.WHITE,
                     this.plugin.getName(uuid))

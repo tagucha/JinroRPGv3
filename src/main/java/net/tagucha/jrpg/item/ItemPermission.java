@@ -14,7 +14,7 @@ public enum ItemPermission {
         @Override
         public String getErrorMessage() {
             return String.format("%s%s%sは誰でも使えます",
-                    JinroRPG.getLogo(ChatColor.RED),
+                    JinroRPG.getChatLogo(ChatColor.RED),
                     ChatColor.DARK_RED,
                     "%s");
         }
@@ -28,7 +28,7 @@ public enum ItemPermission {
         @Override
         public String getErrorMessage() {
             return String.format("%s%s%sは人狼のみが使えます",
-                    JinroRPG.getLogo(ChatColor.RED),
+                    JinroRPG.getChatLogo(ChatColor.RED),
                     ChatColor.DARK_RED,
                     "%s");
         }
@@ -42,7 +42,7 @@ public enum ItemPermission {
         @Override
         public String getErrorMessage() {
             return String.format("%s%s%sは人狼以外が使えます",
-                    JinroRPG.getLogo(ChatColor.RED),
+                    JinroRPG.getChatLogo(ChatColor.RED),
                     ChatColor.DARK_RED,
                     "%s");
         }
@@ -56,7 +56,7 @@ public enum ItemPermission {
         @Override
         public String getErrorMessage() {
             return String.format("%s%s%sは共犯者のみが使えます",
-                    JinroRPG.getLogo(ChatColor.RED),
+                    JinroRPG.getChatLogo(ChatColor.RED),
                     ChatColor.DARK_RED,
                     "%s");
         }

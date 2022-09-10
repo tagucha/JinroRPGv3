@@ -23,6 +23,7 @@ public class GameConfig {
     private double emerald_odds = 0.5;
     private int time_day = 120,time_night = 120,time_first_day = 60;
     private int max_player = 16;
+    private boolean replace_name = false;
     private boolean isReloaded = false;
 
     public GameConfig(JinroRPG plugin) {
@@ -143,6 +144,8 @@ public class GameConfig {
                 }
             }
         }
+
+        this.replace_name = this.config.getBoolean("setting.replace_name", false);
     }
 
     public Map<String, Integer> getCustomModelData() {
@@ -175,6 +178,10 @@ public class GameConfig {
 
     public Map<Integer, int[]> getJobs() {
         return jobs;
+    }
+
+    public boolean doReplaceName() {
+        return replace_name;
     }
 
     public boolean isReloaded() {

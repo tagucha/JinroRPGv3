@@ -20,7 +20,7 @@ public class SacredCross extends GameItem {
                 Material.NETHER_STAR,
                 ChatColor.WHITE + "聖なる十字架",
                 Arrays.asList(
-                        String.format("%s%s殴って使用%s%s",ChatColor.GREEN,ChatColor.ITALIC,ChatColor.RESET,ChatColor.ITALIC,ChatColor.BLUE,ChatColor.ITALIC),
+                        String.format("%s%s殴って使用",ChatColor.GREEN,ChatColor.ITALIC),
                         String.format("%s吸血鬼%sを一撃で倒せる",ChatColor.LIGHT_PURPLE,ChatColor.GRAY + "だった場合、倒すことができる"),
                         String.format("%s※一回で壊れる",ChatColor.RED)
                 ),

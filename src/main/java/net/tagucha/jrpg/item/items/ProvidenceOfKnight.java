@@ -36,13 +36,13 @@ public class ProvidenceOfKnight extends GameItem {
     @Override
     protected void onClickSign(JinroGame game, PlayerInteractEvent event, Player clicker, UUID target) {
         if (clicker.getUniqueId().equals(target)) {
-            clicker.sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 自分には使用できません");
+            clicker.sendMessage(JinroRPG.getChatLogo(ChatColor.RED) + " 自分には使用できません");
         } else {
             this.plugin.getPlayer(target).ifPresent(player -> {
                 if (game.pray(target)) {
-                    clicker.sendMessage(String.format("%s %s に 騎士の加護 を使用しました", JinroRPG.getLogo(ChatColor.RED), player.getName()));
+                    clicker.sendMessage(String.format("%s %s に 騎士の加護 を使用しました", JinroRPG.getChatLogo(ChatColor.RED), player.getName()));
                     clicker.getInventory().setItemInMainHand(null);
-                } else event.getPlayer().sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 既に使用されています");
+                } else event.getPlayer().sendMessage(JinroRPG.getChatLogo(ChatColor.RED) + " 既に使用されています");
             });
         }
         event.setCancelled(true);

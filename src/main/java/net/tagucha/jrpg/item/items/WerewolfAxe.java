@@ -44,7 +44,7 @@ public class WerewolfAxe extends GameItem {
     @Override
     protected void onAttack(JinroGame game, PlayerAttackEvent event) {
         if (game.timer.getClock() == GameTimer.Clock.DAY && game.getAxeUsed().contains(event.getAttacker().getUniqueId())) {
-            event.getAttacker().sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 昼のあいだは一度しか使えません");
+            event.getAttacker().sendMessage(JinroRPG.getChatLogo(ChatColor.RED) + " 昼のあいだは一度しか使えません");
             event.setCancelled(true);
             return;
         }

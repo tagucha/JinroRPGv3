@@ -14,7 +14,7 @@ public enum TimePermission {
         @Override
         public String getErrorMessage() {
             return String.format("%s%s%sはいつでも使えます",
-                    JinroRPG.getLogo(ChatColor.RED),
+                    JinroRPG.getChatLogo(ChatColor.RED),
                     ChatColor.DARK_RED,
                     "%s"
             );
@@ -29,7 +29,7 @@ public enum TimePermission {
         @Override
         public String getErrorMessage() {
             return String.format("%s%s%sは昼間のみ使えます",
-                    JinroRPG.getLogo(ChatColor.RED),
+                    JinroRPG.getChatLogo(ChatColor.RED),
                     ChatColor.DARK_RED,
                     "%s"
             );
@@ -44,7 +44,7 @@ public enum TimePermission {
         @Override
         public String getErrorMessage() {
             return String.format("%s%s%sは夜にのみ使えます",
-                    JinroRPG.getLogo(ChatColor.RED),
+                    JinroRPG.getChatLogo(ChatColor.RED),
                     ChatColor.DARK_RED,
                     "%s"
             );

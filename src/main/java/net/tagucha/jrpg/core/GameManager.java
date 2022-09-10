@@ -56,7 +56,7 @@ public record GameManager(JinroRPG plugin) implements Listener {
                     ChatColor.GOLD + "" + ChatColor.BOLD + ChatColor.UNDERLINE + "GAME START"));
         }
         String names = werewolf_side.stream().map(this.plugin::getName).collect(Collectors.joining(", "));
-        werewolf_side.forEach(uuid -> event.getGame().sendMessage(uuid, JinroRPG.getLogo(ChatColor.GOLD) + " 人狼は " + names + "です"));
+        werewolf_side.forEach(uuid -> event.getGame().sendMessage(uuid, JinroRPG.getChatLogo(ChatColor.GOLD) + " 人狼は " + names + "です"));
     }
 
     @EventHandler
@@ -134,14 +134,14 @@ public record GameManager(JinroRPG plugin) implements Listener {
         Player player = event.getPlayer();
         this.plugin.isPlayer(player.getUniqueId()).ifPresent(game -> {
             if (game.isAlive(player.getUniqueId())) {
-                player.sendMessage(JinroRPG.getLogo(ChatColor.AQUA) + " あなたの役職は" + game.getJob(player.getUniqueId()).get().getDisplayName());
+                player.sendMessage(JinroRPG.getChatLogo(ChatColor.AQUA) + " あなたの役職は" + game.getJob(player.getUniqueId()).get().getDisplayName());
                 if (game.getMessageQueue().get(player.getUniqueId()).isEmpty()) {
-                    player.sendMessage(JinroRPG.getLogo(ChatColor.AQUA) + " ログアウト中に届いたメッセージはありません。");
+                    player.sendMessage(JinroRPG.getChatLogo(ChatColor.AQUA) + " ログアウト中に届いたメッセージはありません。");
                 } else {
-                    player.sendMessage(JinroRPG.getLogo(ChatColor.AQUA) + " ログアウト中に以下のメッセージが届きました");
+                    player.sendMessage(JinroRPG.getChatLogo(ChatColor.AQUA) + " ログアウト中に以下のメッセージが届きました");
                     while (!game.getMessageQueue().get(player.getUniqueId()).isEmpty())
                         player.sendMessage(game.getMessageQueue().get(player.getUniqueId()).remove());
-                    player.sendMessage(JinroRPG.getLogo(ChatColor.AQUA) + " 以上です。");
+                    player.sendMessage(JinroRPG.getChatLogo(ChatColor.AQUA) + " 以上です。");
                 }
                 game.getLogoutSchedule().remove(player.getUniqueId()).cancel();
             } else if (game.getDead().contains(player.getUniqueId())) {
@@ -167,10 +167,10 @@ public record GameManager(JinroRPG plugin) implements Listener {
         UUID uuid = event.getPlayer().getUniqueId();
         this.plugin.isPlayer(uuid).ifPresent(game -> {
             if (game.isAlive(uuid)) {
-                event.setQuitMessage(String.format("%s %sがゲームから退出しました。一定時間が経過すると死亡判定がくだされます。", JinroRPG.getLogo(ChatColor.RED), event.getPlayer().getName()));
+                event.setQuitMessage(String.format("%s %sがゲームから退出しました。一定時間が経過すると死亡判定がくだされます。", JinroRPG.getChatLogo(ChatColor.RED), event.getPlayer().getName()));
                 game.getLogoutCount().put(uuid, game.getLogoutCount().getOrDefault(uuid, 0) + 1);
                 int count = game.getLogoutCount().get(uuid);
-                plugin.getLogger().info(JinroRPG.getLogo(ChatColor.RED) + " ログアウトカウント: " + count);
+                plugin.getLogger().info(JinroRPG.getChatLogo(ChatColor.RED) + " ログアウトカウント: " + count);
                 long limit = (long) (120 - Math.pow(count - 1, 3));
                 if (limit <= 0) game.die(uuid);
                 else {
@@ -179,7 +179,7 @@ public record GameManager(JinroRPG plugin) implements Listener {
                         public void run() {
                             game.die(uuid);
                             game.getLogoutSchedule().remove(uuid);
-                            game.noticeMessage(JinroRPG.getLogo(ChatColor.GOLD) + " " + event.getPlayer().getName() + "はログアウト時間超過のため死亡しました");
+                            game.noticeMessage(JinroRPG.getChatLogo(ChatColor.GOLD) + " " + event.getPlayer().getName() + "はログアウト時間超過のため死亡しました");
                         }
                     };
                     runnable.runTaskLater(this.plugin, limit * 20);
@@ -213,14 +213,14 @@ public record GameManager(JinroRPG plugin) implements Listener {
         event.getGame().getPrayers().clear();
         event.getGame().getTalisman().clear();
         event.getGame().getAxeUsed().clear();
-        event.getGame().noticeMessage(JinroRPG.getLogo(ChatColor.GOLD) + " 昼になりました");
+        event.getGame().noticeMessage(JinroRPG.getChatLogo(ChatColor.GOLD) + " 昼になりました");
         event.getGame().noticeMessageAsTitle(ChatColor.GOLD + "☼" + ChatColor.YELLOW + "昼になりました" + ChatColor.GOLD + "☼",event.getGame().timer.getDay() + "日目");
     }
 
     @EventHandler
     public void onChangeToNight(GameChangeToNightEvent event) {
         event.getGame().spawnSkeletons();
-        event.getGame().noticeMessage(JinroRPG.getLogo(ChatColor.GOLD) + " 夜になりました");
+        event.getGame().noticeMessage(JinroRPG.getChatLogo(ChatColor.GOLD) + " 夜になりました");
         event.getGame().noticeMessageAsTitle(ChatColor.YELLOW + "" + ChatColor.BOLD + "☽" + ChatColor.RESET + ChatColor.DARK_BLUE + "夜になりました" + ChatColor.YELLOW + "" + ChatColor.BOLD + "☽","");
     }
 
@@ -240,14 +240,14 @@ public record GameManager(JinroRPG plugin) implements Listener {
                                 Sign s = (Sign) b.getState();
                                 if (!(s.getLine(1).equalsIgnoreCase(REGISTERED.replace("<NAME>", event.getPlayer().getName())) && s.getLine(3).equalsIgnoreCase(TO_FORTUNE)))
                                     continue;
-                                event.getPlayer().sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 既に他の看板に登録しています");
+                                event.getPlayer().sendMessage(JinroRPG.getChatLogo(ChatColor.RED) + " 既に他の看板に登録しています");
                                 return;
                             }
                         }
                 sign.setLine(1, REGISTERED.replace("<NAME>", event.getPlayer().getName()));
                 sign.setLine(3, TO_FORTUNE);
                 sign.update();
-                event.getPlayer().sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 看板を登録しました");
+                event.getPlayer().sendMessage(JinroRPG.getChatLogo(ChatColor.RED) + " 看板を登録しました");
                 return;
             }
             Optional<JinroGame> optional = this.plugin.isPlayer(player.getUniqueId());
@@ -258,11 +258,11 @@ public record GameManager(JinroRPG plugin) implements Listener {
                         continue;
                     if (event.getPlayer().getGameMode() != GameMode.SPECTATOR) {
                         if (game.getAlive().contains(event.getPlayer().getUniqueId())) if (game.timer.isDay()) {
-                            event.getPlayer().sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 占いは夜のみ可能です");
+                            event.getPlayer().sendMessage(JinroRPG.getChatLogo(ChatColor.RED) + " 占いは夜のみ可能です");
                             return;
                         }
                         if (!game.fortune(event.getPlayer().getUniqueId())) {
-                            event.getPlayer().sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 占い可能回数が0です");
+                            event.getPlayer().sendMessage(JinroRPG.getChatLogo(ChatColor.RED) + " 占い可能回数が0です");
                             return;
                         }
                     }
@@ -272,9 +272,9 @@ public record GameManager(JinroRPG plugin) implements Listener {
                             arg += ChatColor.GRAY + "(" + GameJob.MAD.getRealName() + ")";
                         if (game.getDead().contains(uuid)) arg += ChatColor.GRAY + "(死亡)";
                     }
-                    event.getPlayer().sendMessage(String.format("%s占い結果: %sは%s", JinroRPG.getLogo(ChatColor.RED), this.plugin.getName(uuid), arg));
+                    event.getPlayer().sendMessage(String.format("%s占い結果: %sは%s", JinroRPG.getChatLogo(ChatColor.RED), this.plugin.getName(uuid), arg));
                     if (game.isAlive(player.getUniqueId())) {
-                        player.sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 残りの占い可能回数: " + game.getHeart().getOrDefault(player.getUniqueId(), 0) + "回");
+                        player.sendMessage(JinroRPG.getChatLogo(ChatColor.RED) + " 残りの占い可能回数: " + game.getHeart().getOrDefault(player.getUniqueId(), 0) + "回");
                         Bukkit.getPluginManager().callEvent(new GameFortuneEvent(game, event.getPlayer(), uuid));
                     }
                     return;
@@ -310,13 +310,13 @@ public record GameManager(JinroRPG plugin) implements Listener {
             event.setCancelled(true);
             if (game.getAlive().contains(event.getPlayer().getUniqueId())) {
                 if (game.timer.isNight()) {
-                    event.getPlayer().sendMessage(String.format("%s 夜間にチャットは使えません", JinroRPG.getLogo(ChatColor.RED)));
+                    event.getPlayer().sendMessage(String.format("%s 夜間にチャットは使えません", JinroRPG.getChatLogo(ChatColor.RED)));
                     return;
                 }
-                String message = String.format("%s %s: %s", JinroRPG.getLogo(ChatColor.DARK_AQUA), event.getPlayer().getName(), event.getMessage());
+                String message = String.format("%s %s: %s", JinroRPG.getChatLogo(ChatColor.DARK_AQUA), event.getPlayer().getName(), event.getMessage());
                 this.plugin.getOnlinePlayers().forEach(player -> player.sendMessage(message));
             } else {
-                String message = String.format("%s %s: %s", JinroRPG.getLogo(ChatColor.GRAY), event.getPlayer().getName(), event.getMessage());
+                String message = String.format("%s %s: %s", JinroRPG.getChatLogo(ChatColor.GRAY), event.getPlayer().getName(), event.getMessage());
                 this.plugin.getOnlinePlayers().forEach(player -> {
                     if (!game.getAlive().contains(player.getUniqueId()))
                         game.sendMessage(player.getUniqueId(), message);

@@ -34,14 +34,14 @@ public class Telescope extends GameItem{
     @Override
     protected void onClickSign(JinroGame game, PlayerInteractEvent event, Player clicker, UUID target) {
         if (game.getJob(clicker.getUniqueId()).filter(job -> job.equals(GameJob.CORONER)).isEmpty()) {
-            clicker.sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 検死は検死官のみが行えます");
+            clicker.sendMessage(JinroRPG.getChatLogo(ChatColor.RED) + " 検死は検死官のみが行えます");
             return;
         }
         if (!this.plugin.JOB_MANAGER.isKilledByCorner(target)) {
-            clicker.sendMessage(JinroRPG.getLogo(ChatColor.RED) + " 検死官が止め刺した相手のみ検死を行えます");
+            clicker.sendMessage(JinroRPG.getChatLogo(ChatColor.RED) + " 検死官が止め刺した相手のみ検死を行えます");
             return;
         }
-        game.getJob(target).ifPresent(job -> clicker.sendMessage(String.format("%s %s%s", JinroRPG.getLogo(ChatColor.RED), plugin.getName(target), job.isHuman ? "は人間でした" : "は人間ではありませんでした")));
+        game.getJob(target).ifPresent(job -> clicker.sendMessage(String.format("%s %s%s", JinroRPG.getChatLogo(ChatColor.RED), plugin.getName(target), job.isHuman ? "は人間でした" : "は人間ではありませんでした")));
         event.setCancelled(true);
     }
 }
